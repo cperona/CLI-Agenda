@@ -3,3 +3,14 @@
 CLI-Agenda es una aplicación de consola escrita en Java que centraliza la gestión de información relevante para el usuario. 
 Permite crear, editar, listar y eliminar tareas y notas, así como registrar y recibir notificaciones de eventos importantes. 
 La herramienta ofrece filtrado y ordenamiento por prioridad, estado y fecha, y soporta repetición de eventos de manera anual o personalizada.
+
+## 🛠 Tecnologías
+- Java
+- MySQL
+
+## 🚀 Instalación i Ejecución
+1. Clonar el repositorio: `git clone github.com/cperona/CLI-Agenda`
+2. Ejecutar: `sudo docker compose up -d`
+
+## 🧩 Requisitos previos
+- docker
