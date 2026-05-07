@@ -13,4 +13,5 @@ La herramienta ofrece filtrado y ordenamiento por prioridad, estado y fecha, y s
 2. Ejecutar: `sudo docker compose up -d`
 
 ## 🧩 Requisitos previos
-- docker
+- Docker
+- Java-25
