@@ -1,1 +1,29 @@
 USE agenda;
+
+CREATE TABLE IF NOT EXISTS event (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(80) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    event_date DATETIME NOT NULL,
+    recurring BOOLEAN
+);
+
+CREATE TABLE IF NOT EXISTS task (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(80) NOT NULL,
+    deadline DATETIME NULL,
+    priority ENUM('LOW','MEDIUM','HIGH') NOT NULL,
+    is_completed TINYINT(1) NOT NULL,
+    created_at DATETIME NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    event_id INT UNSIGNED NULL,
+    FOREIGN KEY (event_id) REFERENCES event(id)
+);
+
+CREATE TABLE IF NOT EXISTS note (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    description VARCHAR(255) NOT NULL,
+    created_at DATETIME NOT NULL,
+    task_id INT UNSIGNED NOT NULL,
+    FOREIGN KEY (task_id) REFERENCES task(id)
+);
