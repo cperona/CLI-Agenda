@@ -8,9 +8,11 @@ services:
       MYSQL_DATABASE: agenda
       MYSQL_USER: devs
       MYSQL_PASSWORD: "pw1234"
-    network_mode: "host"
+    ports:
+      - "3307:3306"
     volumes:
-        - mysql_data:/var/lib/mysql
-        - ./build/mysql/structure.sql:/docker-entrypoint-initdb.d/structure.sql:ro
+      - mysql_data:/var/lib/mysql
+      - ./src/main/java/infrastructure/sql/structure.sql:/docker-entrypoint-initdb.d/structure.sql:ro
+
 volumes:
-    mysql_data:
+  mysql_data:
