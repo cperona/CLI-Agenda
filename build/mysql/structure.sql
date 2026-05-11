@@ -1,5 +1,5 @@
 USE agenda;
-CREATE TABLE event (
+CREATE TABLE IF NOT EXISTS event (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(80) NOT NULL,
     description VARCHAR(255) NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE event (
     recurring BOOLEAN
 );
 
-CREATE TABLE task (
+CREATE TABLE IF NOT EXISTS task (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(80) NOT NULL,
     deadline DATETIME NOT NULL,
@@ -15,11 +15,11 @@ CREATE TABLE task (
     status TINYINT(1) NOT NULL,
     creation_date DATETIME NOT NULL,
     description VARCHAR(255) NOT NULL,
-    event_id INT UNSIGNED NOT NULL,
+    event_id INT UNSIGNED NULL,
     FOREIGN KEY (event_id) REFERENCES event(id)
 );
 
-CREATE TABLE note (
+CREATE TABLE IF NOT EXISTS note (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     description VARCHAR(255) NOT NULL,
     creation_date DATETIME,
