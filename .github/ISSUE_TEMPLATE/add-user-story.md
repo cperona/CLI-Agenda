@@ -8,7 +8,7 @@ assignees: ''
 ---
 
 **As a** developer,
-**I can** Lorem ipsum dolor sit amet,
+**I want** Lorem ipsum dolor sit amet,
 **so that** Lorem ipsum dolor sit amet
 
 ---
