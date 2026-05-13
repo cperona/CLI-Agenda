@@ -4,7 +4,7 @@ services:
     container_name: agendaDatabaseTest
     environment:
       MYSQL_ROOT_PASSWORD: "pw123az987"
-      MYSQL_DATABASE: agenda_test
+      MYSQL_DATABASE: agenda
       MYSQL_USER: devs
       MYSQL_PASSWORD: "pw1234"
     ports:
