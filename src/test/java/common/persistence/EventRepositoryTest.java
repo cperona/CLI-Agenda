@@ -1,8 +1,7 @@
 package common.persistence;
 import event.model.Event;
 import event.repository.EventRepository;
-import event.repository.EventRespositoryMysql;
-import event.service.EventService;
+import event.repository.EventRepositoryMysql;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +11,7 @@ public class EventRepositoryTest {
     @Test
     public void insertEventTest()
     {
-        EventRepository eventRepository = new EventRespositoryMysql();
+        EventRepository eventRepository = new EventRepositoryMysql();
         Event event = new Event("titulo","description", LocalDate.now(),false);
         Event inserted = eventRepository.save(event);
         Assertions.assertNotNull(inserted.getId());

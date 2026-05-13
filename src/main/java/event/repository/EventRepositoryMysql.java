@@ -1,5 +1,6 @@
 package event.repository;
 
+import common.exception.EventIdDoesNotExists;
 import common.exception.EventSQLException;
 import common.persistence.DatabaseConnection;
 import event.model.Event;
@@ -9,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class EventRespositoryMysql implements EventRepository{
+public class EventRepositoryMysql implements EventRepository{
     private DatabaseConnection databaseConnection;
     private Connection connection;
-    public EventRespositoryMysql()
+    public EventRepositoryMysql()
     {
         databaseConnection = DatabaseConnection.getInstance();
         connection = databaseConnection.getConnection();
@@ -38,10 +39,10 @@ public class EventRespositoryMysql implements EventRepository{
                     if(keys.next())
                     {
                         result.setId(keys.getInt(1));
-                        result.setTitle(keys.getString(2));
-                        result.setDescription(keys.getString(3));
-                        result.setEvent_date(keys.getDate(4).toLocalDate());
-                        result.setRecurring(keys.getBoolean(5));
+                        result.setTitle(event.getTitle());
+                        result.setDescription(event.getDescription());
+                        result.setEvent_date(event.getEvent_date());
+                        result.setRecurring(event.getRecurring());
                     }
                     else
                     {
@@ -50,9 +51,33 @@ public class EventRespositoryMysql implements EventRepository{
                     return result;
                 }
             } catch (SQLException ex) {
-                throw new EventSQLException("Error alta evento.");
+                ex.printStackTrace();
+                throw new EventSQLException("Error alta evento." + ex.getMessage());
             }
     }
+
+    @Override
+    public void update(Event event, int id) {
+        if(findById(id).isEmpty())
+        {
+            throw new EventIdDoesNotExists();
+        }
+        String sql = "UPDATE event SET title =?,description=?,event_date=?,recurring=? WHERE id=?;";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)){
+            pstmt.setString(1, event.getTitle());
+            pstmt.setString(2, event.getDescription());
+            pstmt.setDate(3, Date.valueOf(event.getEvent_date()));
+            pstmt.setBoolean(4, event.getRecurring());
+            pstmt.setInt(5, id);
+            pstmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            throw new EventSQLException("Error update event.");
+        }
+    }
+
+
+
 
     @Override
     public List<Event> findAll() {
@@ -97,5 +122,20 @@ public class EventRespositoryMysql implements EventRepository{
     public void close()
     {
         databaseConnection.close();
+    }
+
+    @Override
+    public void delete(int id) {
+        if(findById(id).isEmpty())
+        {
+            throw new EventIdDoesNotExists();
+        }
+        String sql = "DELETE FROM event WHERE id=?";
+        try ( PreparedStatement prest = connection.prepareStatement(sql)) {
+            prest.setInt(1, id);
+            prest.executeUpdate();
+        } catch (SQLException ex) {
+           throw new EventSQLException("Error deleting event.");
+        }
     }
 }
