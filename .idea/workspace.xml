@@ -5,14 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b5e98464-a42c-4fc7-863d-b9f7235406c3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/application/AgendaApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/AgendaApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/event/model/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/event/model/Event.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/event/repository/EventRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/event/repository/EventRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/event/repository/EventRespositoryMysql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/event/repository/EventRespositoryMysql.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/event/service/EventService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/event/service/EventService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/agendadb-test.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/common/persistence/EventRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/common/persistence/EventRepositoryTest.java" afterDir="false" />
     </list>
-    <list id="a5763bf0-9ec2-49fb-a74c-1d989c464acb" name="Changes by CiberIntegra_10" comment="">
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-    </list>
+    <list id="a5763bf0-9ec2-49fb-a74c-1d989c464acb" name="Changes by CiberIntegra_10" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -71,27 +72,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.CLI-Agenda [:application.AgendaApp.main()].executor": "Run",
-    "Gradle.EventRepositoryTest.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "chore/jdbc",
-    "ignore.virus.scanning.warn.message": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/fedorahp/Documentos/cybernarium/projectegrup/CLI-Agenda",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
-    "to.speed.mode.migration.done": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.CLI-Agenda [:application.AgendaApp.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.EventRepositoryTest.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;chore/jdbc&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/fedorahp/Documentos/cybernarium/projectegrup/CLI-Agenda&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>

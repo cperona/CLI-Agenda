@@ -24,6 +24,11 @@ public class Event {
         this.recurring = recurring;
     }
 
+    public Event()
+    {
+
+    }
+
     public int getId() {
         return id;
     }

@@ -14,7 +14,7 @@ public class EventRepositoryTest {
     {
         EventRepository eventRepository = new EventRespositoryMysql();
         Event event = new Event("titulo","description", LocalDate.now(),false);
-        Event inserted = eventRepository.insertEvent(event);
+        Event inserted = eventRepository.save(event);
         Assertions.assertNotNull(inserted.getId());
         eventRepository.close();
     }
