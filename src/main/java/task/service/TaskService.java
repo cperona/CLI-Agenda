@@ -26,10 +26,18 @@ public class TaskService {
 
     private Task fromRequest(TaskRequestDto dto) {
         Task task = new Task();
+
+        titleValidation(dto.title());
         task.setTitle(dto.title());
+
+        descriptionValidation(dto.description());
         task.setDescription(dto.description());
+
+        validateDeadline(dto.deadline());
         task.setDeadline(dto.deadline());
-        task.setPriority(dto.priority());
+
+        task.setPriority(defaultPriorityIfNull(dto.priority()));
+
         task.setIsCompleted(false);
         task.setCreatedAt(LocalDateTime.now());
         task.setEventId(dto.eventId());
@@ -48,10 +56,15 @@ public class TaskService {
         Task existing = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException("Task not found with id: " + id));
 
+        titleValidation(dto.title());
         existing.setTitle(dto.title());
+
+        descriptionValidation(dto.description());
         existing.setDescription(dto.description());
+
         existing.setDeadline(dto.deadline());
-        existing.setPriority(dto.priority());
+
+        existing.setPriority(defaultPriorityIfNull(dto.priority()));
         existing.setEventId(dto.eventId());
 
         taskRepository.update(existing);
@@ -62,5 +75,31 @@ public class TaskService {
         taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException("Task not found with id: " + id));
         taskRepository.delete(id);
+    }
+
+    public void titleValidation(String title) {
+        int maxLength = 80;
+        if (title == null || title.isEmpty()) throw new IllegalArgumentException("Title is empty.");
+        if (title.length() > maxLength)
+            throw new IllegalArgumentException("Title is too long. Max " + maxLength + " characters.");
+    }
+
+    public void descriptionValidation(String description) {
+        int maxLength = 255;
+        if (description.length() > maxLength)
+            throw new IllegalArgumentException("Description is too long. Max " + maxLength + " characters.");
+    }
+
+    public void validateDeadline(LocalDateTime deadline) {
+        if (deadline.isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException(
+                    "The deadline cannot be earlier than the current date and time."
+            );
+        }
+    }
+
+    public Priority defaultPriorityIfNull(Priority priority) {
+        if (priority == null) return Priority.MEDIUM;
+        return priority;
     }
 }
