@@ -1,8 +1,10 @@
 package common.persistence;
 
-import event.model.Event;
+import event.dto.EventRequestDTO;
+import event.dto.EventResponseDTO;
 import event.repository.EventRepositoryMysql;
 import event.service.EventService;
+import event.service.EventServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -12,10 +14,11 @@ public class EventServiceTest {
     @Test
     public void insertEventTest()
     {
-        EventService eventService = new EventService(new EventRepositoryMysql());
-        Event event = new Event("titulo","description", LocalDate.now(),false);
-        Event inserted = eventService.insertEvent(event);
-        Assertions.assertNotNull(inserted.getId());
+        EventService eventService = new EventServiceImpl(new EventRepositoryMysql());
+        EventRequestDTO event = new EventRequestDTO("titulo","descripcion",LocalDate.now(),false);
+
+        EventResponseDTO inserted = eventService.insertEvent(event);
+        Assertions.assertNotNull(inserted.id());
         eventService.close();
     }
 }
