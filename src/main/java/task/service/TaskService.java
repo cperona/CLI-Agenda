@@ -62,6 +62,7 @@ public class TaskService {
         descriptionValidation(dto.description());
         existing.setDescription(dto.description());
 
+        validateDeadline(dto.deadline());
         existing.setDeadline(dto.deadline());
 
         existing.setPriority(defaultPriorityIfNull(dto.priority()));
@@ -91,6 +92,7 @@ public class TaskService {
     }
 
     public void validateDeadline(LocalDateTime deadline) {
+        if (deadline == null) return;
         if (deadline.isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException(
                     "The deadline cannot be earlier than the current date and time."
@@ -99,7 +101,6 @@ public class TaskService {
     }
 
     public Priority defaultPriorityIfNull(Priority priority) {
-        if (priority == null) return Priority.MEDIUM;
-        return priority;
+        return priority == null ? Priority.MEDIUM : priority;
     }
 }
