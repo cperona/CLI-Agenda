@@ -18,21 +18,28 @@ class TaskRepositoryMysqlTest {
     private TaskRepositoryMysql repository;
 
     @BeforeEach
-    void initRepository() {
+    void setUp() {
         repository = new TaskRepositoryMysql();
     }
 
     // Clear the Task table before tests while preserving resulting test data for manual verification.
     @BeforeAll
-    static void setUp() throws SQLException {
+    static void clearTaskTable() throws SQLException {
+
         Connection conn = DatabaseConnection
                 .getInstance()
                 .getConnection();
 
-        try (PreparedStatement ps =
-                     conn.prepareStatement("DELETE FROM task")) {
+        try (PreparedStatement ps1 =
+                     conn.prepareStatement("DELETE FROM task");
 
-            ps.executeUpdate();
+             PreparedStatement ps2 =
+                     conn.prepareStatement(
+                             "ALTER TABLE task AUTO_INCREMENT = 1"
+                     )) {
+
+            ps1.executeUpdate();
+            ps2.executeUpdate();
         }
     }
 
