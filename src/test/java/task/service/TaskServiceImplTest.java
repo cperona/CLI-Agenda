@@ -17,15 +17,15 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TaskServiceTest {
+class TaskServiceImplTest {
 
-    private TaskService taskService;
+    private TaskServiceImpl taskServiceImpl;
 
     @BeforeEach
     void setUp() {
 
         TaskRepository repository = new TaskRepositoryMysql();
-        taskService = new TaskService(repository);
+        taskServiceImpl = new TaskServiceImpl(repository);
     }
 
     @BeforeAll
@@ -59,7 +59,7 @@ class TaskServiceTest {
                 null
         );
 
-        TaskResponseDto result = taskService.createTask(dto);
+        TaskResponseDto result = taskServiceImpl.createTask(dto);
 
         assertNotNull(result);
         assertEquals("Create task title", result.title());
@@ -78,7 +78,7 @@ class TaskServiceTest {
 
         assertThrows(
                 IllegalArgumentException.class,
-                () -> taskService.createTask(dto)
+                () -> taskServiceImpl.createTask(dto)
         );
     }
 
@@ -97,7 +97,7 @@ class TaskServiceTest {
 
         assertThrows(
                 IllegalArgumentException.class,
-                () -> taskService.createTask(dto)
+                () -> taskServiceImpl.createTask(dto)
         );
     }
 
@@ -116,7 +116,7 @@ class TaskServiceTest {
 
         assertThrows(
                 IllegalArgumentException.class,
-                () -> taskService.createTask(dto)
+                () -> taskServiceImpl.createTask(dto)
         );
     }
 
@@ -133,7 +133,7 @@ class TaskServiceTest {
 
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
-                () -> taskService.createTask(dto)
+                () -> taskServiceImpl.createTask(dto)
         );
 
         assertEquals(
@@ -153,9 +153,9 @@ class TaskServiceTest {
                 null
         );
 
-        TaskResponseDto created = taskService.createTask(dto);
+        TaskResponseDto created = taskServiceImpl.createTask(dto);
 
-        Optional<TaskResponseDto> result = taskService.findById(created.id());
+        Optional<TaskResponseDto> result = taskServiceImpl.findById(created.id());
 
         assertTrue(result.isPresent());
         assertEquals(created.id(), result.get().id());
@@ -172,11 +172,11 @@ class TaskServiceTest {
                 null
         );
 
-        TaskResponseDto created = taskService.createTask(dto);
+        TaskResponseDto created = taskServiceImpl.createTask(dto);
 
-        taskService.deleteTask(created.id());
+        taskServiceImpl.deleteTask(created.id());
 
-        var deleted = taskService.findById(created.id());
+        var deleted = taskServiceImpl.findById(created.id());
 
         assertTrue(deleted.isEmpty());
     }
@@ -186,7 +186,7 @@ class TaskServiceTest {
 
         assertThrows(
                 TaskNotFoundException.class,
-                () -> taskService.deleteTask(99999)
+                () -> taskServiceImpl.deleteTask(99999)
         );
     }
 
@@ -201,7 +201,7 @@ class TaskServiceTest {
                 null
         );
 
-        TaskResponseDto created = taskService.createTask(dto);
+        TaskResponseDto created = taskServiceImpl.createTask(dto);
 
         TaskRequestDto updatedDto = new TaskRequestDto(
                 "New title (edited)",
@@ -212,7 +212,7 @@ class TaskServiceTest {
         );
 
         TaskResponseDto updated =
-                taskService.updateTask(created.id(), updatedDto);
+                taskServiceImpl.updateTask(created.id(), updatedDto);
 
         assertEquals("New title (edited)", updated.title());
         assertEquals("New description", updated.description());
@@ -232,7 +232,7 @@ class TaskServiceTest {
 
         assertThrows(
                 TaskNotFoundException.class,
-                () -> taskService.updateTask(99999, dto)
+                () -> taskServiceImpl.updateTask(99999, dto)
         );
     }
 
@@ -247,7 +247,7 @@ class TaskServiceTest {
                 null
         );
 
-        TaskResponseDto result = taskService.createTask(dto);
+        TaskResponseDto result = taskServiceImpl.createTask(dto);
 
         assertNotNull(result);
         assertEquals(Priority.MEDIUM, result.priority());
