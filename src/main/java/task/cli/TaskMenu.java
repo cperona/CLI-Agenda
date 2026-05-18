@@ -39,7 +39,7 @@ public class TaskMenu {
                     6. List all tasks
                     7. List tasks by completed
                     8. List tasks by pending
-                    9.List task by Upcoming
+                    9. List task by Upcoming
                     10. Filter by priority
                    
                     0. Back

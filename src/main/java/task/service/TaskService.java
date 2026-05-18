@@ -10,28 +10,28 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TaskService {
-    public TaskResponseDto toDto(Task t);
-    public Task fromRequest(TaskRequestDto dto);
+    TaskResponseDto toDto(Task t);
+    Task fromRequest(TaskRequestDto dto);
 
-    public TaskResponseDto createTask(TaskRequestDto dto);
+    TaskResponseDto createTask(TaskRequestDto dto);
 
-    public Optional<TaskResponseDto> findById(int id);
+    Optional<TaskResponseDto> findById(int id);
 
-    public TaskResponseDto updateTask(int id, TaskRequestDto dto);
+    TaskResponseDto updateTask(int id, TaskRequestDto dto);
 
-    public void deleteTask(int id);
+    void deleteTask(int id);
 
-    public void markCompleted(int id);
+    void markCompleted(int id);
 
-    public List<TaskResponseDto> listAll();
+    List<TaskResponseDto> listAll();
 
-    public List<TaskResponseDto> listByPriority(Priority priority);
+    List<TaskResponseDto> listByPriority(Priority priority);
 
-    public List<TaskResponseDto> listPending();
+    List<TaskResponseDto> listPending();
 
-    public List<TaskResponseDto> listCompleted();
+    List<TaskResponseDto> listCompleted();
 
-    public List<TaskResponseDto> listUpcoming();
+    List<TaskResponseDto> listUpcoming();
 
-    public List<TaskResponseDto> listByEvent(int eventId);
+    List<TaskResponseDto> listByEvent(int eventId);
 }
