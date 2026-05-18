@@ -4,7 +4,7 @@ import common.exception.TaskNotFoundException;
 import task.dto.TaskRequestDto;
 import task.dto.TaskResponseDto;
 import task.model.Priority;
-import task.service.TaskService;
+import task.service.TaskServiceImpl;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,14 +15,14 @@ import java.util.Scanner;
 
 public class TaskMenu {
 
-    private final TaskService taskService;
+    private final TaskServiceImpl taskServiceImpl;
     private final Scanner scanner;
 
     private static final String DATE_PATTERN = "dd/MM/yyyy HH:mm";
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
 
-    public TaskMenu(TaskService taskService) {
-        this.taskService = taskService;
+    public TaskMenu(TaskServiceImpl taskServiceImpl) {
+        this.taskServiceImpl = taskServiceImpl;
         scanner = new Scanner(System.in);
     }
 
@@ -62,7 +62,7 @@ public class TaskMenu {
             System.out.println(" *  Leave blank for no deadline");
             Optional<LocalDateTime> deadline = readDeadline();
 
-            TaskResponseDto created = taskService.createTask(
+            TaskResponseDto created = taskServiceImpl.createTask(
                     new TaskRequestDto(title, description, deadline.orElse(null), priority.orElse(null), null)
             );
             System.out.println("  • Task created with id: " + created.id());
@@ -75,7 +75,7 @@ public class TaskMenu {
     public void editTask() {
         System.out.println("Edit task, insert...");
         Integer id = readId();
-        Optional<TaskResponseDto> found = taskService.findById(id);
+        Optional<TaskResponseDto> found = taskServiceImpl.findById(id);
         if (found.isEmpty()) {
             System.out.println("  x Task not found.");
             pressEnterToContinue();
@@ -96,7 +96,7 @@ public class TaskMenu {
         Optional<Priority> newPriority = readPriority();
         Priority priority =  newPriority.orElse(existing.priority());
 
-        taskService.updateTask(id, new TaskRequestDto(title, desc, deadline, priority, existing.eventId()));
+        taskServiceImpl.updateTask(id, new TaskRequestDto(title, desc, deadline, priority, existing.eventId()));
         System.out.println("  • Task updated.");
         pressEnterToContinue();
     }
@@ -105,7 +105,7 @@ public class TaskMenu {
         System.out.println("Delete task, insert...");
         int id = readId();
         try {
-            taskService.deleteTask(id);
+            taskServiceImpl.deleteTask(id);
             System.out.println("  • Task deleted.");
         } catch (TaskNotFoundException e) {
             System.out.println("  x " + e.getMessage());
@@ -116,7 +116,7 @@ public class TaskMenu {
     public void findTaskById() {
         System.out.println("Find task by id, insert...");
         int id = readId();
-        Optional<TaskResponseDto> found = taskService.findById(id);
+        Optional<TaskResponseDto> found = taskServiceImpl.findById(id);
         if (found.isEmpty()) {
             System.out.println("  No tasks found.");
         } else {
@@ -163,7 +163,7 @@ public class TaskMenu {
             String input = scanner.nextLine().trim();
             try {
                 if(!required && input.isEmpty()) return input;
-                taskService.titleValidation(input);
+                taskServiceImpl.titleValidation(input);
                 return input;
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage() + "\n Try again.");
@@ -177,7 +177,7 @@ public class TaskMenu {
             String input = scanner.nextLine().trim();
             try {
                 if(!required && input.isEmpty()) return input;
-                taskService.descriptionValidation(input);
+                taskServiceImpl.descriptionValidation(input);
                 return input;
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage() + "\n Try again.");
@@ -206,7 +206,7 @@ public class TaskMenu {
             if (input.isBlank()) return Optional.empty();
             try {
                 LocalDateTime deadline = LocalDateTime.parse(input, DATE_TIME_FORMATTER);
-                taskService.validateDeadline(deadline);
+                taskServiceImpl.validateDeadline(deadline);
                 return Optional.of(deadline);
             } catch (DateTimeParseException e) {
                 System.out.println("  Invalid format, try again.");
