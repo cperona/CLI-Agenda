@@ -6,9 +6,10 @@ import task.model.*;
 import task.dto.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
-public class TaskServiceImpl {
+public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
 
@@ -16,7 +17,7 @@ public class TaskServiceImpl {
         this.taskRepository = taskRepository;
     }
 
-    private TaskResponseDto toDto(Task t) {
+    public TaskResponseDto toDto(Task t) {
         return new TaskResponseDto(
                 t.getId(), t.getTitle(), t.getDescription(),
                 t.getDeadline(), t.getPriority(), t.isCompleted(),
@@ -24,7 +25,7 @@ public class TaskServiceImpl {
         );
     }
 
-    private Task fromRequest(TaskRequestDto dto) {
+    public Task fromRequest(TaskRequestDto dto) {
         Task task = new Task();
 
         titleValidation(dto.title());
@@ -78,6 +79,38 @@ public class TaskServiceImpl {
         taskRepository.delete(id);
     }
 
+    public void markCompleted(int id) {
+        Task existing = taskRepository.findById(id)
+                .orElseThrow(() -> new TaskNotFoundException("Task not found with id: " + id));
+        existing.setIsCompleted(true);
+        taskRepository.update(existing);
+    }
+
+    public List<TaskResponseDto> listAll() {
+        return taskRepository.findAll().stream().map(this::toDto).toList();
+    }
+
+    public List<TaskResponseDto> listByPriority(Priority priority) {
+        return taskRepository.findByPriority(priority).stream().map(this::toDto).toList();
+    }
+
+    public List<TaskResponseDto> listPending() {
+        return taskRepository.findByCompleted(false).stream().map(this::toDto).toList();
+    }
+
+    public List<TaskResponseDto> listCompleted() {
+        return taskRepository.findByCompleted(true).stream().map(this::toDto).toList();
+    }
+
+    public List<TaskResponseDto> listUpcoming() {
+        return taskRepository.findUpcoming().stream().map(this::toDto).toList();
+    }
+
+    public List<TaskResponseDto> listByEvent(int eventId) {
+        return taskRepository.findByEventId(eventId).stream().map(this::toDto).toList();
+    }
+
+    // ------------------- Validations -------------------------
     public void titleValidation(String title) {
         int maxLength = 80;
         if (title == null || title.isEmpty()) throw new IllegalArgumentException("Title is empty.");
