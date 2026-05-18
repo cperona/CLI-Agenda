@@ -5,16 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b5e98464-a42c-4fc7-863d-b9f7235406c3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/common/persistence/DatabaseConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/common/persistence/DatabaseConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/event/repository/EventRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/event/repository/EventRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/event/repository/EventRepositoryMysql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/event/repository/EventRepositoryMysql.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/event/service/EventService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/event/service/EventService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/event/service/EventServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/event/service/EventServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/common/persistence/EventRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/common/persistence/EventRepositoryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/common/persistence/EventServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/common/persistence/EventServiceImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/common/persistence/EventRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/common/persistence/EventRepositoryMysqlTest.java" afterDir="false" />
     </list>
     <list id="a5763bf0-9ec2-49fb-a74c-1d989c464acb" name="Changes by CiberIntegra_10" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -42,9 +34,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
+        <option value="Enum" />
         <option value="Record" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>

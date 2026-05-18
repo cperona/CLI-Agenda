@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-public class EventRepositoryTest {
+public class EventRepositoryMysqlTest {
     @BeforeEach
     public void deleteAll()
     {
