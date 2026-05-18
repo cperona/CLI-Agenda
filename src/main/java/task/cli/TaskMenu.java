@@ -34,7 +34,14 @@ public class TaskMenu {
                     1. Create task
                     2. Edit task
                     3. Delete task
-                    4. Find task by id
+                    4. Mark task as completed
+                    5. Find task by id
+                    6. List all tasks
+                    7. List tasks by completed
+                    8. List tasks by pending
+                    9.List task by Upcoming
+                    10. Filter by priority
+                   
                     0. Back
                     ==============================
                     """);
@@ -45,7 +52,13 @@ public class TaskMenu {
                 case "1" -> createTask();
                 case "2" -> editTask();
                 case "3" -> deleteTask();
-                case "4" -> findTaskById();
+                case "4" -> markCompleted();
+                case "5" -> findTaskById();
+                case "6" -> listTasks(taskServiceImpl.listAll());
+                case "7" -> listTasks(taskServiceImpl.listCompleted());
+                case "8" -> listTasks(taskServiceImpl.listPending());
+                case "9" -> listTasks(taskServiceImpl.listUpcoming());
+                case "10" -> filterByPriority();
                 case "0" -> back = true;
                 default -> System.out.println("  Invalid option.");
             }
@@ -104,9 +117,30 @@ public class TaskMenu {
     public void deleteTask() {
         System.out.println("Delete task, insert...");
         int id = readId();
+
+        System.out.print("Are you sure you want to delete this task? (yes/no): ");
+        String confirmation = scanner.nextLine().trim().toLowerCase();
+
+        if (!confirmation.equals("yes")) {
+            System.out.println("  • Deletion cancelled.");
+            pressEnterToContinue();
+            return;
+        }
+
         try {
             taskServiceImpl.deleteTask(id);
             System.out.println("  • Task deleted.");
+        } catch (TaskNotFoundException e) {
+            System.out.println("  x " + e.getMessage());
+        }
+        pressEnterToContinue();
+    }
+
+    private void markCompleted() {
+        try {
+            System.out.println("Mark task as completed, insert...");
+            taskServiceImpl.markCompleted(readId());
+            System.out.println("  • Task marked as completed.");
         } catch (TaskNotFoundException e) {
             System.out.println("  x " + e.getMessage());
         }
@@ -123,6 +157,19 @@ public class TaskMenu {
             printTask(found.get());
         }
         pressEnterToContinue();
+    }
+
+    private void filterByPriority() {
+        System.out.println("Filter by priority, insert...");
+        while(true) {
+            try {
+                Priority input = readPriority().orElseThrow(IllegalArgumentException::new);
+                listTasks(taskServiceImpl.listByPriority(input));
+                return;
+            } catch(IllegalArgumentException e) {
+                System.out.println("  Priority can't be blank");
+            }
+        }
     }
 
     private void listTasks(List<TaskResponseDto> tasks) {

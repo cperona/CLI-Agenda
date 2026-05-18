@@ -6,17 +6,32 @@ import task.model.Priority;
 import task.model.Task;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public interface TaskService {
-    TaskResponseDto toDto(Task t);
-    Task fromRequest(TaskRequestDto dto);
-    TaskResponseDto createTask(TaskRequestDto dto);
-    Optional<TaskResponseDto> findById(int id);
-    TaskResponseDto updateTask(int id, TaskRequestDto dto);
-    void deleteTask(int id);
-    void titleValidation(String title);
-    void descriptionValidation(String description);
-    void validateDeadline(LocalDateTime deadline);
-    Priority defaultPriorityIfNull(Priority priority);
+    public TaskResponseDto toDto(Task t);
+    public Task fromRequest(TaskRequestDto dto);
+
+    public TaskResponseDto createTask(TaskRequestDto dto);
+
+    public Optional<TaskResponseDto> findById(int id);
+
+    public TaskResponseDto updateTask(int id, TaskRequestDto dto);
+
+    public void deleteTask(int id);
+
+    public void markCompleted(int id);
+
+    public List<TaskResponseDto> listAll();
+
+    public List<TaskResponseDto> listByPriority(Priority priority);
+
+    public List<TaskResponseDto> listPending();
+
+    public List<TaskResponseDto> listCompleted();
+
+    public List<TaskResponseDto> listUpcoming();
+
+    public List<TaskResponseDto> listByEvent(int eventId);
 }

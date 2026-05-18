@@ -7,6 +7,8 @@ import task.model.Task;
 
 import java.sql.Connection;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class TaskRepositoryMysql implements TaskRepository {
@@ -118,6 +120,80 @@ public class TaskRepositoryMysql implements TaskRepository {
             return rs.next() ? Optional.of(mapRow(rs)) : Optional.empty();
         } catch (SQLException e) {
             throw new TaskSQLException("Error finding task by id", e);
+        }
+    }
+
+    @Override
+    public List<Task> findAll() {
+        String sql = "SELECT * FROM task ORDER BY created_at DESC";
+        try (Statement st = connection().createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+            List<Task> list = new ArrayList<>();
+            while (rs.next()) list.add(mapRow(rs));
+            return list;
+        } catch (SQLException e) {
+            throw new TaskSQLException("Error listing tasks", e);
+        }
+    }
+
+    @Override
+    public List<Task> findByPriority(Priority priority) {
+        String sql = "SELECT * FROM task WHERE priority = ? ORDER BY deadline ASC";
+        try (PreparedStatement ps = connection().prepareStatement(sql)) {
+            ps.setString(1, priority.name());
+            ResultSet rs = ps.executeQuery();
+            List<Task> list = new ArrayList<>();
+            while (rs.next()) list.add(mapRow(rs));
+            return list;
+        } catch (SQLException e) {
+            throw new TaskSQLException("Error filtering tasks by priority", e);
+        }
+    }
+
+    @Override
+    public List<Task> findByCompleted(boolean completed) {
+        String sql = "SELECT * FROM task WHERE is_completed = ? ORDER BY created_at DESC";
+        try (PreparedStatement ps = connection().prepareStatement(sql)) {
+            ps.setInt(1, completed ? 1 : 0);
+            ResultSet rs = ps.executeQuery();
+            List<Task> list = new ArrayList<>();
+            while (rs.next()) list.add(mapRow(rs));
+            return list;
+        } catch (SQLException e) {
+            throw new TaskSQLException("Error filtering tasks by completion", e);
+        }
+    }
+
+    @Override
+    public List<Task> findUpcoming() {
+        String sql = """
+            SELECT * FROM task
+            WHERE deadline IS NOT NULL
+              AND is_completed = false
+              AND deadline >= NOW()
+            ORDER BY deadline ASC
+            """;
+        try (PreparedStatement ps = connection().prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            List<Task> list = new ArrayList<>();
+            while (rs.next()) list.add(mapRow(rs));
+            return list;
+        } catch (SQLException e) {
+            throw new TaskSQLException("Error finding upcoming tasks", e);
+        }
+    }
+
+    @Override
+    public List<Task> findByEventId(int eventId) {
+        String sql = "SELECT * FROM task WHERE event_id = ?";
+        try (PreparedStatement ps = connection().prepareStatement(sql)) {
+            ps.setInt(1, eventId);
+            ResultSet rs = ps.executeQuery();
+            List<Task> list = new ArrayList<>();
+            while (rs.next()) list.add(mapRow(rs));
+            return list;
+        } catch (SQLException e) {
+            throw new TaskSQLException("Error finding tasks by event", e);
         }
     }
 }
