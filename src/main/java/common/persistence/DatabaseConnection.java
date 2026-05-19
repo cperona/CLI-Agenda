@@ -53,7 +53,7 @@ public class DatabaseConnection {
 
     public Connection getConnection() {
         try {
-            if (connection == null || connection.isClosed()) {
+            //if (connection == null || connection.isClosed()) {
                 // Si la conexión se cerró, recarga las propiedades y reconecta
                 Properties props = new Properties();
                 try (InputStream input = DatabaseConnection.class
@@ -66,7 +66,7 @@ public class DatabaseConnection {
                         props.getProperty("agendadb.user"),
                         props.getProperty("agendadb.password")
                 );
-            }
+           // }
         } catch (SQLException | IOException e) {
             throw new RuntimeException("Lost database connection: " + e.getMessage(), e);
         }
