@@ -6,8 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="b5e98464-a42c-4fc7-863d-b9f7235406c3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/agendadb.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/agendadb.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/task/model/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/task/model/Task.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/task/repository/TaskRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/task/repository/TaskRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/task/repository/TaskRepositoryMysql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/task/repository/TaskRepositoryMysql.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/note/repository/NoteRepositoryMysqlTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/note/repository/NoteRepositoryMysqlTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/task/repository/TaskRepositoryMysqlTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/task/repository/TaskRepositoryMysqlTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/task/service/TaskServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/task/service/TaskServiceImplTest.java" afterDir="false" />
     </list>
     <list id="a5763bf0-9ec2-49fb-a74c-1d989c464acb" name="Changes by CiberIntegra_10" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -53,7 +58,7 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/cperona/CLI-Agenda.git&quot;,
+    &quot;url&quot;: &quot;https://github.com/cperona/CLI-Agenda&quot;,
     &quot;accountId&quot;: &quot;de188f3e-d6af-4b17-8a18-d769b65a71a4&quot;
   }
 }</component>
@@ -77,17 +82,21 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Gradle.CLI-Agenda [:application.AgendaApp.main()].executor": "Run",
+    "Gradle.EventRepositoryMysqlTest.executor": "Run",
     "Gradle.EventRepositoryTest.executor": "Run",
     "Gradle.EventServiceImplTest.executor": "Run",
     "Gradle.EventServiceTest.executor": "Run",
+    "Gradle.NoteRepositoryMysqlTest (1).executor": "Run",
     "Gradle.NoteRepositoryMysqlTest.executor": "Run",
     "Gradle.NoteRepositoryMysqlTest.insertNoteTest.executor": "Run",
+    "Gradle.TaskRepositoryMysqlTest.executor": "Run",
+    "Gradle.TaskServiceImplTest.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "dev",
+    "git-widget-placeholder": "tests-repositoy-service-note-and-task-change",
     "ignore.virus.scanning.warn.message": "true",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
@@ -100,7 +109,7 @@
     "to.speed.mode.migration.done": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Gradle.NoteRepositoryMysqlTest.insertNoteTest">
+  <component name="RunManager">
     <configuration name="NoteRepositoryMysqlTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />

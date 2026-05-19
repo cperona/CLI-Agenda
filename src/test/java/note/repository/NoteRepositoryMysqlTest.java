@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.internal.matchers.Not;
+import task.repository.TaskRepository;
+import task.repository.TaskRepositoryMysql;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,6 +21,8 @@ public class NoteRepositoryMysqlTest {
     public void deleteAll() {
         NoteRepository noteRepository = new NoteRepositoryMysql();
         noteRepository.deleteAll();
+        TaskRepository taskRepository = new TaskRepositoryMysql();
+        taskRepository.deleteAll();
     }
 
     @Test
@@ -103,4 +107,6 @@ public class NoteRepositoryMysqlTest {
         Assertions.assertEquals("description",notes.get(0).getDescription());
         Assertions.assertEquals("description2",notes.get(1).getDescription());
     }
+
+
 }

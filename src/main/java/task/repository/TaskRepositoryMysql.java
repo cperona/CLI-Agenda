@@ -102,7 +102,7 @@ public class TaskRepositoryMysql implements TaskRepository {
 
     @Override
     public void delete(int id) {
-        String sql = "DELETE FROM task WHERE id = ?";
+        String sql = "DELETE FROM task WHERE id = ?;";
         try (PreparedStatement pstmt = connection().prepareStatement(sql)) {
             pstmt.setInt(1, id);
             pstmt.executeUpdate();
@@ -112,7 +112,7 @@ public class TaskRepositoryMysql implements TaskRepository {
     }
 
     public Optional<Task> findById(int id) {
-        String sql = "SELECT * FROM task WHERE id = ?";
+        String sql = "SELECT * FROM task WHERE id = ?;";
         try (PreparedStatement pstmt = connection().prepareStatement(sql)) {
             pstmt.setInt(1, id);
 
@@ -125,7 +125,7 @@ public class TaskRepositoryMysql implements TaskRepository {
 
     @Override
     public List<Task> findAll() {
-        String sql = "SELECT * FROM task ORDER BY created_at DESC";
+        String sql = "SELECT * FROM task ORDER BY created_at DESC;";
         try (Statement st = connection().createStatement();
              ResultSet rs = st.executeQuery(sql)) {
             List<Task> list = new ArrayList<>();
@@ -138,7 +138,7 @@ public class TaskRepositoryMysql implements TaskRepository {
 
     @Override
     public List<Task> findByPriority(Priority priority) {
-        String sql = "SELECT * FROM task WHERE priority = ? ORDER BY deadline ASC";
+        String sql = "SELECT * FROM task WHERE priority = ? ORDER BY deadline ASC;";
         try (PreparedStatement ps = connection().prepareStatement(sql)) {
             ps.setString(1, priority.name());
             ResultSet rs = ps.executeQuery();
@@ -152,7 +152,7 @@ public class TaskRepositoryMysql implements TaskRepository {
 
     @Override
     public List<Task> findByCompleted(boolean completed) {
-        String sql = "SELECT * FROM task WHERE is_completed = ? ORDER BY created_at DESC";
+        String sql = "SELECT * FROM task WHERE is_completed = ? ORDER BY created_at DESC;";
         try (PreparedStatement ps = connection().prepareStatement(sql)) {
             ps.setInt(1, completed ? 1 : 0);
             ResultSet rs = ps.executeQuery();
@@ -185,7 +185,7 @@ public class TaskRepositoryMysql implements TaskRepository {
 
     @Override
     public List<Task> findByEventId(int eventId) {
-        String sql = "SELECT * FROM task WHERE event_id = ?";
+        String sql = "SELECT * FROM task WHERE event_id = ?;";
         try (PreparedStatement ps = connection().prepareStatement(sql)) {
             ps.setInt(1, eventId);
             ResultSet rs = ps.executeQuery();
@@ -194,6 +194,16 @@ public class TaskRepositoryMysql implements TaskRepository {
             return list;
         } catch (SQLException e) {
             throw new TaskSQLException("Error finding tasks by event", e);
+        }
+    }
+
+    @Override
+    public void deleteAll() {
+        String sql = "DELETE FROM task;";
+        try (PreparedStatement pstmt = connection().prepareStatement(sql)) {
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new TaskSQLException("Error deleting tasks", e);
         }
     }
 }
