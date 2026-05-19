@@ -1,27 +1,45 @@
 package task.cli;
 
 import common.exception.TaskNotFoundException;
+import common.persistence.DatabaseConnection;
 import task.dto.TaskRequestDto;
 import task.dto.TaskResponseDto;
 import task.model.Priority;
+import task.service.TaskService;
 import task.service.TaskServiceImpl;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
 public class TaskMenu {
 
-    private final TaskServiceImpl taskServiceImpl;
+    private static TaskMenu instance;
+    private final TaskService taskServiceImpl;
     private final Scanner scanner;
 
     private static final String DATE_PATTERN = "dd/MM/yyyy HH:mm";
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
 
-    public TaskMenu(TaskServiceImpl taskServiceImpl) {
+    private TaskMenu() {
+    }
+
+    public static TaskMenu getInstance() {
+        if (instance == null) {
+            synchronized (DatabaseConnection.class) {
+                if (instance == null) {
+                    instance = new TaskMenu();
+                }
+            }
+        }
+        return instance;
+    }
+
+    public TaskMenu(TaskService taskServiceImpl) {
         this.taskServiceImpl = taskServiceImpl;
         scanner = new Scanner(System.in);
     }
