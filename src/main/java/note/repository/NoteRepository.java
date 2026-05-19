@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface NoteRepository {
+    /**
+     * Save Note to the database.
+     * @return A Note object with the id attribute set.
+     */
     Note save(Note note);
     void update(Note note);
     List<Note> findAll();

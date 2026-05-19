@@ -1,4 +1,4 @@
-package common.persistence;
+package event.service;
 
 import common.exception.EventIdDoesNotExists;
 import event.dto.EventMapper;

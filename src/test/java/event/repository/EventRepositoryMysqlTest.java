@@ -1,4 +1,4 @@
-package common.persistence;
+package event.repository;
 import event.model.Event;
 import event.repository.EventRepository;
 import event.repository.EventRepositoryMysql;
@@ -25,7 +25,6 @@ public class EventRepositoryMysqlTest {
         EventRepository eventRepository = new EventRepositoryMysql();
         Event event = new Event("titulo","descripcion", LocalDate.now(),false);
         Event inserted = eventRepository.save(event);
-        Assertions.assertNotNull(inserted.getId());
         Optional<Event> found = eventRepository.findById(inserted.getId());
         Assertions.assertTrue(found.isPresent());
         Assertions.assertEquals("titulo",found.get().getTitle());

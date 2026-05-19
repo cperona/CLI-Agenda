@@ -15,7 +15,13 @@ public class Note {
         this.task_id = task_id;
     }
 
-    public Note(){
+    public Note(String description, LocalDate created_at, int task_id){
+        this.description = description;
+        this.created_at = created_at;
+        this.task_id = task_id;
+    }
+
+    public Note() {
 
     }
 
