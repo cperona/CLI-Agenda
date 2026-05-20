@@ -3,6 +3,8 @@ package task.repository;
 import event.model.Event;
 import event.repository.EventRepository;
 import event.repository.EventRepositoryMysql;
+import note.repository.NoteRepository;
+import note.repository.NoteRepositoryMysql;
 import org.junit.jupiter.api.*;
 import task.model.Priority;
 import task.model.Task;
@@ -18,12 +20,15 @@ class TaskRepositoryMysqlTest {
 
     private TaskRepository repository;
     private EventRepository eventRepository;
+    private NoteRepository noteRepository;
 
     @BeforeEach
-    void setUp() {
+    public void deleteAll() {
+        noteRepository = new NoteRepositoryMysql();
+        noteRepository.deleteAll();
         repository = new TaskRepositoryMysql();
-        eventRepository = new EventRepositoryMysql();
         repository.deleteAll();
+        eventRepository = new EventRepositoryMysql();
         eventRepository.deleteAll();
     }
 

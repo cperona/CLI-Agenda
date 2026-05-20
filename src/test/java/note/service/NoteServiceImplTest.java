@@ -63,16 +63,23 @@ public class NoteServiceImplTest {
 
     @Test
     void updateNoteShouldUpdateAndReturnResponse() {
-        when(noteRepository.findById(1)).thenReturn(Optional.of(note));
-        NoteRequestDTO updateDTO = new NoteRequestDTO("modified", LocalDate.of(2026, 5, 21), 10);
+        NoteRequestDTO updateDTO = new NoteRequestDTO(
+                "modified",
+                LocalDate.of(2026, 5, 21),
+                10
+        );
+
         NoteResponseDTO result = noteService.updateNote(updateDTO, 1);
+
         assertNotNull(result);
         assertEquals(1, result.id());
         assertEquals("modified", result.description());
         assertEquals(LocalDate.of(2026, 5, 21), result.created_at());
         assertEquals(10, result.task_id());
+
         ArgumentCaptor<Note> captor = ArgumentCaptor.forClass(Note.class);
         verify(noteRepository).update(captor.capture());
+
         Note updated = captor.getValue();
         assertEquals(1, updated.getId());
         assertEquals("modified", updated.getDescription());

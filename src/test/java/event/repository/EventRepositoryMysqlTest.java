@@ -1,25 +1,34 @@
 package event.repository;
 
 import event.model.Event;
+import note.repository.NoteRepository;
+import note.repository.NoteRepositoryMysql;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import task.repository.TaskRepository;
+import task.repository.TaskRepositoryMysql;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 public class EventRepositoryMysqlTest {
+    private EventRepository eventRepository;
+    private NoteRepository noteRepository;
+    private TaskRepository taskRepository;
     @BeforeEach
     public void deleteAll() {
-        EventRepository eventRepository = new EventRepositoryMysql();
+        noteRepository = new NoteRepositoryMysql();
+        noteRepository.deleteAll();
+        taskRepository = new TaskRepositoryMysql();
+        taskRepository.deleteAll();
+        eventRepository = new EventRepositoryMysql();
         eventRepository.deleteAll();
-
     }
 
     @Test
     public void insertEventTest() {
-        EventRepository eventRepository = new EventRepositoryMysql();
         Event event = new Event("titulo", "descripcion", LocalDate.now(), false);
         Event inserted = eventRepository.save(event);
         Optional<Event> found = eventRepository.findById(inserted.getId());
@@ -30,7 +39,6 @@ public class EventRepositoryMysqlTest {
 
     @Test
     public void updateEventTest() {
-        EventRepository eventRepository = new EventRepositoryMysql();
         Event event = new Event("titulo", "descripcion", LocalDate.now(), false);
         Event inserted = eventRepository.save(event);
         inserted.setTitle("Modificado");
@@ -43,7 +51,6 @@ public class EventRepositoryMysqlTest {
 
     @Test
     public void findByIdTest() {
-        EventRepository eventRepository = new EventRepositoryMysql();
         Event event = new Event("titulo", "descripcion", LocalDate.now(), false);
         Event inserted = eventRepository.save(event);
         Optional<Event> found = eventRepository.findById(inserted.getId());
@@ -54,7 +61,6 @@ public class EventRepositoryMysqlTest {
 
     @Test
     public void findAllTest() {
-        EventRepository eventRepository = new EventRepositoryMysql();
         Event event = new Event("titulo", "descripcion", LocalDate.now(), false);
         Event eventB = new Event("titulo2", "descripcion2", LocalDate.now(), false);
         eventRepository.save(event);
@@ -68,7 +74,6 @@ public class EventRepositoryMysqlTest {
 
     @Test
     public void existsByIdTest() {
-        EventRepository eventRepository = new EventRepositoryMysql();
         Event event = new Event("titulo", "descripcion", LocalDate.now(), false);
         Event inserted = eventRepository.save(event);
         boolean found = eventRepository.existsById(inserted.getId());
@@ -77,7 +82,6 @@ public class EventRepositoryMysqlTest {
 
     @Test
     public void deleteTest() {
-        EventRepository eventRepository = new EventRepositoryMysql();
         Event event = new Event("titulo", "descripcion", LocalDate.now(), false);
         Event inserted = eventRepository.save(event);
         eventRepository.delete(inserted.getId());
@@ -88,7 +92,6 @@ public class EventRepositoryMysqlTest {
 
     @Test
     public void findAllByDateAfterTest() {
-        EventRepository eventRepository = new EventRepositoryMysql();
         Event event = new Event("titulo", "descripcion", LocalDate.of(2026, 1, 1), false);
         Event inserted = eventRepository.save(event);
         List<Event> events = eventRepository.findAllByDateAfter(LocalDate.of(2025, 1, 1));
