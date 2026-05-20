@@ -6,8 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="b5e98464-a42c-4fc7-863d-b9f7235406c3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/agendadb.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/agendadb.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/event/repository/EventRepositoryMysql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/event/repository/EventRepositoryMysql.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/event/repository/EventRepositoryMysqlTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/event/repository/EventRepositoryMysqlTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/note/service/NoteServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/note/service/NoteServiceImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/task/repository/TaskRepositoryMysqlTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/task/repository/TaskRepositoryMysqlTest.java" afterDir="false" />
     </list>
     <list id="a5763bf0-9ec2-49fb-a74c-1d989c464acb" name="Changes by CiberIntegra_10" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -23,9 +25,28 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="CLI-Agenda" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="CLI-Agenda" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="CLI-Agenda" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="verification" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -53,7 +74,7 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/cperona/CLI-Agenda.git&quot;,
+    &quot;url&quot;: &quot;https://github.com/cperona/CLI-Agenda&quot;,
     &quot;accountId&quot;: &quot;de188f3e-d6af-4b17-8a18-d769b65a71a4&quot;
   }
 }</component>
@@ -77,17 +98,23 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Gradle.CLI-Agenda [:application.AgendaApp.main()].executor": "Run",
+    "Gradle.CLI-Agenda [runAllTests].executor": "Run",
+    "Gradle.EventRepositoryMysqlTest.executor": "Run",
     "Gradle.EventRepositoryTest.executor": "Run",
     "Gradle.EventServiceImplTest.executor": "Run",
     "Gradle.EventServiceTest.executor": "Run",
+    "Gradle.NoteRepositoryMysqlTest (1).executor": "Run",
     "Gradle.NoteRepositoryMysqlTest.executor": "Run",
     "Gradle.NoteRepositoryMysqlTest.insertNoteTest.executor": "Run",
+    "Gradle.NoteServiceImplTest.executor": "Run",
+    "Gradle.TaskRepositoryMysqlTest.executor": "Run",
+    "Gradle.TaskServiceImplTest.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "dev",
+    "git-widget-placeholder": "tests-repositoy-service-note-and-task-change",
     "ignore.virus.scanning.warn.message": "true",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
@@ -100,7 +127,32 @@
     "to.speed.mode.migration.done": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Gradle.NoteRepositoryMysqlTest.insertNoteTest">
+  <component name="RunManager" selected="Gradle.CLI-Agenda [runAllTests]">
+    <configuration name="CLI-Agenda [runAllTests]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="runAllTests" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
+      <method v="2" />
+    </configuration>
     <configuration name="NoteRepositoryMysqlTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -157,8 +209,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.NoteRepositoryMysqlTest.insertNoteTest" />
+        <item itemvalue="Gradle.CLI-Agenda [runAllTests]" />
         <item itemvalue="Gradle.NoteRepositoryMysqlTest" />
+        <item itemvalue="Gradle.NoteRepositoryMysqlTest.insertNoteTest" />
       </list>
     </recent_temporary>
   </component>

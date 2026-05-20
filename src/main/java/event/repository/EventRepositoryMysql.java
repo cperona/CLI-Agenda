@@ -75,7 +75,7 @@ public class EventRepositoryMysql implements EventRepository {
         try (Connection connection = databaseConnection.getConnection()) {
             Statement stmt;
             ArrayList<Event> events = new ArrayList<>();
-            try (PreparedStatement prepared = connection.prepareStatement("SELECT id,title,description,event_date,recurring FROM event;")) {
+            try (PreparedStatement prepared = connection.prepareStatement("SELECT id,title,description,event_date,recurring FROM event ORDER BY event_date;")) {
                 ResultSet rs = prepared.executeQuery();
                 while (rs.next()) {
                     events.add(new Event(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4).toLocalDate(), rs.getBoolean(5)));
@@ -83,7 +83,7 @@ public class EventRepositoryMysql implements EventRepository {
                 return events;
             }
         } catch (SQLException ex) {
-            throw new EventSQLException("Error leyendo eventos");
+            throw new EventSQLException("Error leyendo eventos"+ ex.getMessage());
         }
     }
 
@@ -133,7 +133,7 @@ public class EventRepositoryMysql implements EventRepository {
                 prest.executeUpdate();
             }
         } catch (SQLException ex) {
-            throw new EventSQLException("Error deleting event.");
+            throw new EventSQLException("Error deleting event."+ ex.getMessage());
         }
     }
 

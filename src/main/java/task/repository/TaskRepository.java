@@ -25,4 +25,6 @@ public interface TaskRepository {
     List<Task> findUpcoming();
 
     List<Task> findByEventId(int eventId);
+
+    void deleteAll();
 }

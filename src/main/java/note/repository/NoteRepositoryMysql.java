@@ -60,6 +60,7 @@ public class NoteRepositoryMysql implements NoteRepository{
                 pstmt.setString(1,note.getDescription());
                 pstmt.setDate(2, Date.valueOf(note.getCreated_at()));
                 pstmt.setInt(3, note.getTask_id());
+                pstmt.setInt(4, note.getId());
                 pstmt.executeUpdate();
             }
         } catch (SQLException ex) {
@@ -72,7 +73,7 @@ public class NoteRepositoryMysql implements NoteRepository{
         try (Connection connection = databaseConnection.getConnection()) {
             Statement stmt;
             ArrayList<Note> notes = new ArrayList<>();
-            try (PreparedStatement prepared = connection.prepareStatement("SELECT id,description,created_at,task_id FROM note;")) {
+            try (PreparedStatement prepared = connection.prepareStatement("SELECT id,description,created_at,task_id FROM note ORDER BY created_at;")) {
                 ResultSet rs = prepared.executeQuery();
                 while (rs.next()) {
                     notes.add(new Note(rs.getInt(1), rs.getString(2), rs.getDate(3).toLocalDate(), rs.getInt(4)));
@@ -152,7 +153,7 @@ public class NoteRepositoryMysql implements NoteRepository{
         try (Connection connection = databaseConnection.getConnection()) {
             Statement stmt;
             List<Note> result = new ArrayList<>();
-            try (PreparedStatement prepared = connection.prepareStatement("SELECT id,description,created_at,task_id FROM note WHERE task_id=?;")) {
+            try (PreparedStatement prepared = connection.prepareStatement("SELECT id,description,created_at,task_id FROM note WHERE task_id=? ORDER BY created_at;")) {
                 prepared.setInt(1, taskId);
                 ResultSet rs = prepared.executeQuery();
                 while(rs.next()) {
