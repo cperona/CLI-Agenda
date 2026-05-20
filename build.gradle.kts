@@ -21,7 +21,7 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
-/*
+
 tasks.register("runAllTests") {
     description = "Run all tests in the project"
     group = "verification"
@@ -32,4 +32,4 @@ tasks.register("runAllTests") {
 tasks.named("test") {
     description = "Run all unit tests"
     group = "verification"
-}*/
+}

@@ -7,10 +7,12 @@
     <list default="true" id="b5e98464-a42c-4fc7-863d-b9f7235406c3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/task/model/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/task/model/Task.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/task/repository/TaskRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/task/repository/TaskRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/task/repository/TaskRepositoryMysql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/task/repository/TaskRepositoryMysql.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/event/repository/EventRepositoryMysql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/event/repository/EventRepositoryMysql.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/note/repository/NoteRepositoryMysql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/note/repository/NoteRepositoryMysql.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/event/repository/EventRepositoryMysqlTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/event/repository/EventRepositoryMysqlTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/event/service/EventServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/event/service/EventServiceImplTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/note/repository/NoteRepositoryMysqlTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/note/repository/NoteRepositoryMysqlTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/note/service/NoteServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/note/service/NoteServiceImplTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/task/repository/TaskRepositoryMysqlTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/task/repository/TaskRepositoryMysqlTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/task/service/TaskServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/task/service/TaskServiceImplTest.java" afterDir="false" />
     </list>
@@ -79,37 +81,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.CLI-Agenda [:application.AgendaApp.main()].executor": "Run",
-    "Gradle.EventRepositoryMysqlTest.executor": "Run",
-    "Gradle.EventRepositoryTest.executor": "Run",
-    "Gradle.EventServiceImplTest.executor": "Run",
-    "Gradle.EventServiceTest.executor": "Run",
-    "Gradle.NoteRepositoryMysqlTest (1).executor": "Run",
-    "Gradle.NoteRepositoryMysqlTest.executor": "Run",
-    "Gradle.NoteRepositoryMysqlTest.insertNoteTest.executor": "Run",
-    "Gradle.TaskRepositoryMysqlTest.executor": "Run",
-    "Gradle.TaskServiceImplTest.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "tests-repositoy-service-note-and-task-change",
-    "ignore.virus.scanning.warn.message": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/fedorahp/Documentos/cybernarium/projectegrup/CLI-Agenda",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
-    "to.speed.mode.migration.done": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.CLI-Agenda [:application.AgendaApp.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.EventRepositoryMysqlTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.EventRepositoryTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.EventServiceImplTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.EventServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.NoteRepositoryMysqlTest (1).executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.NoteRepositoryMysqlTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.NoteRepositoryMysqlTest.insertNoteTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.TaskRepositoryMysqlTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.TaskServiceImplTest.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;tests-repositoy-service-note-and-task-change&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/fedorahp/Documentos/cybernarium/projectegrup/CLI-Agenda&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
   }
-}]]></component>
-  <component name="RunManager">
+}</component>
+  <component name="RunManager" selected="Gradle.NoteRepositoryMysqlTest">
     <configuration name="NoteRepositoryMysqlTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -166,8 +168,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.NoteRepositoryMysqlTest.insertNoteTest" />
         <item itemvalue="Gradle.NoteRepositoryMysqlTest" />
+        <item itemvalue="Gradle.NoteRepositoryMysqlTest.insertNoteTest" />
       </list>
     </recent_temporary>
   </component>

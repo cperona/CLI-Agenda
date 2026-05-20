@@ -1,7 +1,6 @@
 package task.service;
 
 import common.exception.TaskNotFoundException;
-import common.persistence.DatabaseConnection;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -13,11 +12,7 @@ import task.dto.TaskResponseDto;
 import task.model.Priority;
 import task.model.Task;
 import task.repository.TaskRepository;
-import task.repository.TaskRepositoryMysql;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

@@ -75,7 +75,7 @@ public class EventRepositoryMysql implements EventRepository {
         try (Connection connection = databaseConnection.getConnection()) {
             Statement stmt;
             ArrayList<Event> events = new ArrayList<>();
-            try (PreparedStatement prepared = connection.prepareStatement("SELECT id,title,description,event_date,recurring FROM event;")) {
+            try (PreparedStatement prepared = connection.prepareStatement("SELECT id,title,description,event_date,recurring FROM event ORDER BY date;")) {
                 ResultSet rs = prepared.executeQuery();
                 while (rs.next()) {
                     events.add(new Event(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4).toLocalDate(), rs.getBoolean(5)));
