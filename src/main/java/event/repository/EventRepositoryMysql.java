@@ -168,4 +168,31 @@ public class EventRepositoryMysql implements EventRepository {
             throw new EventSQLException("Error leyendo evento");
         }
     }
+
+    @Override
+    public List<Event> findUpcoming(int days) {
+        try (Connection connection = databaseConnection.getConnection()) {
+            String sql = """
+                SELECT * FROM event
+                WHERE (recurring = false
+                       AND event_date BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL ? DAY))
+                   OR (recurring = true
+                       AND DAYOFYEAR(event_date) BETWEEN DAYOFYEAR(NOW())
+                           AND DAYOFYEAR(DATE_ADD(NOW(), INTERVAL ? DAY)))
+                ORDER BY event_date ASC
+                """;
+            try (PreparedStatement prepared = connection.prepareStatement(sql)) {
+                prepared.setInt(1, days);
+                prepared.setInt(2, days);
+                ResultSet rs = prepared.executeQuery();
+                List<Event> result = new ArrayList<>();
+                while (rs.next()) {
+                    result.add(new Event(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4).toLocalDate(), rs.getBoolean(5)));
+                }
+                return result;
+            }
+        } catch (SQLException ex) {
+            throw new EventSQLException("Error finding upcoming events");
+        }
+    }
 }

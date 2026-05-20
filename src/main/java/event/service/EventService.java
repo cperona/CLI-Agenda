@@ -21,4 +21,5 @@ public interface EventService {
 
     List<EventResponseDTO> findAllByDateAfter(LocalDate date);
 
+    List<EventResponseDTO> findByUpcoming(int days);
 }

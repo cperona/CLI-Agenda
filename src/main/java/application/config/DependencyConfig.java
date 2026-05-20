@@ -1,6 +1,13 @@
 package application.config;
 
 import common.persistence.DatabaseConnection;
+import event.Observer.EventNotificationConsole;
+import event.repository.EventRepository;
+import event.repository.EventRepositoryMysql;
+import event.service.EventServiceImpl;
+import note.repository.NoteRepository;
+import note.repository.NoteRepositoryMysql;
+import note.service.NoteServiceImpl;
 import task.cli.TaskMenu;
 import task.repository.TaskRepository;
 import task.repository.TaskRepositoryMysql;
@@ -12,25 +19,29 @@ public class DependencyConfig {
     Connection connection;
 
     private final TaskServiceImpl taskServiceImpl;
-//    private final NoteService noteService;
-//    private final EventService eventService;
+    private final NoteServiceImpl noteServiceImpl;
+    private final EventServiceImpl eventServiceImpl;
 
     public DependencyConfig() {
 
         connection = DatabaseConnection.getInstance().getConnection();
 
         TaskRepository taskRepository  = new TaskRepositoryMysql();
-//        NoteRepository noteRepository  = new NoteRepositoryMysql();
-//        EventRepository eventRepository = new EventRepositoryMysql();
-
+        NoteRepository noteRepository  = new NoteRepositoryMysql();
+        EventRepository eventRepository = new EventRepositoryMysql();
 
         this.taskServiceImpl = new TaskServiceImpl(taskRepository);
-//        this.noteService  = new NoteService(noteRepository);
-//        this.eventService = new EventService(eventRepository);
+        this.noteServiceImpl  = new NoteServiceImpl(noteRepository);
+        this.eventServiceImpl = new EventServiceImpl(eventRepository);
 
+        this.eventServiceImpl.addObserver(new EventNotificationConsole());
     }
 
     public TaskMenu  buildTaskMenu()      { return new TaskMenu(taskServiceImpl); }
 //    public NoteMenu  buildNoteMenu()      { return new NoteMenu(noteService); }
 //    public EventMenu buildEventMenu()     { return new EventMenu(eventService, taskService); }
+
+    public boolean notifyUpcomingEvents() {
+        return eventServiceImpl.notifyObservers();
+    }
 }
