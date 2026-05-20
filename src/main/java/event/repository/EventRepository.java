@@ -15,6 +15,7 @@ public interface EventRepository {
     void deleteAll();
     boolean existsById(int id);
     List<Event> findAllByDateAfter(LocalDate date);
+    List<Event> findUpcoming(int days);
     //boolean titleExists(String title);
     //List<Event> findByTitle(String title);
 }
