@@ -1,19 +1,24 @@
 package note.cli;
 
+import common.exception.EventIdDoesNotExists;
 import event.cli.EventMenu;
 import event.dto.EventRequestDTO;
 import event.dto.EventResponseDTO;
 import note.dto.NoteRequestDTO;
 import note.dto.NoteResponseDTO;
+import note.model.Note;
 import note.service.NoteService;
 import note.service.NoteServiceImpl;
+import task.dto.TaskResponseDto;
 import task.exceptions.TaskIdDoesNotExist;
+import task.model.Task;
 import task.service.TaskService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -41,8 +46,7 @@ public class NoteMenu {
                     2. Edit note
                     3. Delete note
                     4. Find note by id
-                    5. List all notes
-                    6. List notes by task_id
+                    5. List notes by task_id
                     0. Back
                     ==============================
                     """);
@@ -52,14 +56,53 @@ public class NoteMenu {
             switch (option) {
                 case "1" -> createNote();
                 case "2" -> editNote();
-       /*         case "3" -> deleteEvent();
-                case "4" -> findByEventId();
-                case "5" -> listEvents(eventService.listAll());
-                case "6" -> listEvents(eventService.listUpcoming());*/
+                case "3" -> deleteNote();
+                case "4" -> findByNoteId();
+                case "5" -> listNotesByTaskId();
+         /*       case "6" -> listEvents(eventService.listUpcoming());*/
                 case "0" -> back = true;
                 default -> System.out.println("  Invalid option.");
             }
         }
+    }
+
+    private void listNotesByTaskId()
+    {
+        System.out.printf("List notes by task id.");
+        int taskId = readId();
+        try {
+            Optional<TaskResponseDto> task = taskServiceImpl.findById(taskId);
+            if (task.isEmpty()) {
+                throw new TaskIdDoesNotExist();
+            }
+            List<NoteResponseDTO> notes = noteServiceImpl.findByTaskId(taskId);
+            for (NoteResponseDTO note : notes) {
+                printNote(note);
+            }
+        }
+        catch(TaskIdDoesNotExist ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    private void findByNoteId() {
+        System.out.println("Find note by id, insert...");
+        int id = readId();
+        Optional<NoteResponseDTO> found = noteServiceImpl.findById(id);
+        if (found.isEmpty()) {
+            System.out.println("  No notes found.");
+        } else {
+            printNote(found.get());
+        }
+        pressEnterToContinue();
+    }
+
+    private void printNote(NoteResponseDTO note) {
+        System.out.println(note.id());
+        System.out.println("      " + note.description());
+        System.out.println("      Created at: " + note.created_at().format(DATE_TIME_FORMATTER));
+        System.out.println("      Task Id:" + note.task_id());
     }
 
     private void editNote(){
@@ -106,7 +149,7 @@ public class NoteMenu {
     {
         while(true)
         {
-            System.out.println("Insert event id:");
+            System.out.println("Insert id:");
             try
             {
                 int id = Integer.parseInt(scanner.nextLine().trim());
@@ -193,7 +236,30 @@ public class NoteMenu {
         }
     }
 
+    private void deleteNote() {
+        System.out.println("Delete note, insert...");
+        int id = readId();
+        boolean exists = noteServiceImpl.existsById(id);
+        if(exists)
+        {
+            System.out.print("Are you sure you want to delete this note? (yes/no): ");
+            String confirmation = scanner.nextLine().trim().toLowerCase();
 
+            if (!confirmation.equals("yes")) {
+                System.out.println("  • Deletion cancelled.");
+                pressEnterToContinue();
+                return;
+            }
+
+            try {
+                noteServiceImpl.deleteById(id);
+                System.out.println("  • Note deleted.");
+            } catch (EventIdDoesNotExists e) {
+                System.out.println("  x " + e.getMessage());
+            }
+        }
+        pressEnterToContinue();
+    }
 
     private void pressEnterToContinue() {
         System.out.print("\nPress ENTER to continue...");
