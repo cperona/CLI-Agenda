@@ -1,6 +1,7 @@
 package event.service;
 
 import common.exception.EventIdDoesNotExists;
+import common.exception.TaskNotFoundException;
 import event.Observer.EventSubject;
 import event.Observer.EventObserver;
 import event.dto.EventMapper;
@@ -14,7 +15,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class EventServiceImpl implements EventService, EventSubject {
-    private EventRepository eventRepository;
+    private final EventRepository eventRepository;
     private final List<EventObserver> observers = new ArrayList<>();
 
     public EventServiceImpl(EventRepository eventRepository) {
@@ -51,7 +52,14 @@ public class EventServiceImpl implements EventService, EventSubject {
 
     @Override
     public void deleteById(int id) {
+        eventRepository.findById(id)
+                .orElseThrow(EventIdDoesNotExists::new);
         eventRepository.delete(id);
+    }
+
+    @Override
+    public Optional<EventResponseDTO> findById(int id) {
+        return eventRepository.findById(id).map(EventMapper::toDTO);
     }
 
     @Override
@@ -69,6 +77,22 @@ public class EventServiceImpl implements EventService, EventSubject {
     public List<EventResponseDTO> findByUpcoming(int days) {
         List<Event> events = eventRepository.findUpcoming(days);
         return events.stream().map(EventMapper::toDTO).toList();
+    }
+
+    // ----------------EVENT-VALIDATIONS----------------
+    @Override
+    public void titleValidation(String title) {
+        int maxLength = 80;
+        if (title == null || title.isEmpty()) throw new IllegalArgumentException("Title is empty.");
+        if (title.length() > maxLength)
+            throw new IllegalArgumentException("Title is too long. Max " + maxLength + " characters.");
+    }
+
+    @Override
+    public void descriptionValidation(String description) {
+        int maxLength = 255;
+        if (description.length() > maxLength)
+            throw new IllegalArgumentException("Description is too long. Max " + maxLength + " characters.");
     }
 
     // -----------------EVENT-OBSERVER------------------

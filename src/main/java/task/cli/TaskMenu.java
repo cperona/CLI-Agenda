@@ -4,6 +4,7 @@ import common.exception.TaskNotFoundException;
 import task.dto.TaskRequestDto;
 import task.dto.TaskResponseDto;
 import task.model.Priority;
+import task.service.TaskService;
 import task.service.TaskServiceImpl;
 
 import java.time.LocalDateTime;
@@ -15,13 +16,13 @@ import java.util.Scanner;
 
 public class TaskMenu {
 
-    private final TaskServiceImpl taskServiceImpl;
+    private final TaskService taskServiceImpl;
     private final Scanner scanner;
 
     private static final String DATE_PATTERN = "dd/MM/yyyy HH:mm";
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
 
-    public TaskMenu(TaskServiceImpl taskServiceImpl) {
+    public TaskMenu(TaskService taskServiceImpl) {
         this.taskServiceImpl = taskServiceImpl;
         scanner = new Scanner(System.in);
     }
@@ -121,7 +122,7 @@ public class TaskMenu {
         System.out.print("Are you sure you want to delete this task? (yes/no): ");
         String confirmation = scanner.nextLine().trim().toLowerCase();
 
-        if (!confirmation.equals("yes")) {
+        if (!confirmation.equalsIgnoreCase("yes")) {
             System.out.println("  • Deletion cancelled.");
             pressEnterToContinue();
             return;
@@ -178,16 +179,16 @@ public class TaskMenu {
             System.out.println("  No tasks found.");
         } else {
             System.out.println("=======================================");
-            tasks.forEach(this::printTask);
+            tasks.forEach(TaskMenu::printTask);
             System.out.println("=======================================");
         }
         pressEnterToContinue();
     }
 
-    private void printTask(TaskResponseDto t) {
+    public static void printTask(TaskResponseDto t) {
         System.out.printf("  [%d] %s  |  %s  |  %s%n",
                 t.id(), t.title(), t.priority(), t.isCompleted() ? "• Completed" : "○ Pending");
-        System.out.println("      " + t.description());
+        if(!t.description().isBlank()) System.out.println("      " + t.description());
         if (t.deadline() != null) {
             System.out.println("      Deadline: " + t.deadline().format(DATE_TIME_FORMATTER));
         }
@@ -257,6 +258,8 @@ public class TaskMenu {
                 return Optional.of(deadline);
             } catch (DateTimeParseException e) {
                 System.out.println("  Invalid format, try again.");
+            } catch (IllegalArgumentException e) {
+                System.out.println("  " + e.getMessage() + " Try again.");
             }
         }
     }
