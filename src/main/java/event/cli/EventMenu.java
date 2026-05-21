@@ -4,9 +4,11 @@ import common.exception.EventIdDoesNotExists;
 import common.exception.TaskNotFoundException;
 import event.dto.EventRequestDTO;
 import event.dto.EventResponseDTO;
+import event.service.EventService;
 import event.service.EventServiceImpl;
 import task.cli.TaskMenu;
 import task.dto.TaskResponseDto;
+import task.service.TaskService;
 import task.service.TaskServiceImpl;
 
 import java.time.LocalDate;
@@ -20,14 +22,14 @@ import java.util.Scanner;
 
 public class EventMenu {
 
-    private final EventServiceImpl eventServiceImpl;
-    private final TaskServiceImpl taskServiceImpl;
+    private final EventService eventServiceImpl;
+    private final TaskService taskServiceImpl;
     private final Scanner scanner;
 
     private static final String DATE_PATTERN = "dd/MM/yyyy";
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
 
-    public EventMenu(EventServiceImpl eventServiceImpl, TaskServiceImpl taskServiceImpl) {
+    public EventMenu(EventService eventServiceImpl, TaskService taskServiceImpl) {
         this.eventServiceImpl = eventServiceImpl;
         this.taskServiceImpl = taskServiceImpl;
         scanner = new Scanner(System.in);

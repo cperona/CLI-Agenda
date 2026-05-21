@@ -1,5 +1,6 @@
 package event.service;
 
+import event.Observer.EventObserver;
 import event.dto.EventRequestDTO;
 import event.dto.EventResponseDTO;
 
@@ -25,4 +26,14 @@ public interface EventService {
     List<EventResponseDTO> findAllByDateAfter(LocalDate date);
 
     List<EventResponseDTO> findByUpcoming(int days);
+
+    void titleValidation(String title);
+
+    void descriptionValidation(String description);
+
+    void addObserver(EventObserver observer);
+
+    void removeObserver(EventObserver observer);
+
+    boolean notifyObservers();
 }

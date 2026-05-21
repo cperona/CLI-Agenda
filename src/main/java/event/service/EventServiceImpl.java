@@ -80,7 +80,7 @@ public class EventServiceImpl implements EventService, EventSubject {
     }
 
     // ----------------EVENT-VALIDATIONS----------------
-
+    @Override
     public void titleValidation(String title) {
         int maxLength = 80;
         if (title == null || title.isEmpty()) throw new IllegalArgumentException("Title is empty.");
@@ -88,6 +88,7 @@ public class EventServiceImpl implements EventService, EventSubject {
             throw new IllegalArgumentException("Title is too long. Max " + maxLength + " characters.");
     }
 
+    @Override
     public void descriptionValidation(String description) {
         int maxLength = 255;
         if (description.length() > maxLength)
