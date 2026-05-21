@@ -34,4 +34,6 @@ public interface TaskService {
     List<TaskResponseDto> listUpcoming();
 
     List<TaskResponseDto> listByEvent(int eventId);
+
+    public void assignToEvent(int taskId, int eventId);
 }
