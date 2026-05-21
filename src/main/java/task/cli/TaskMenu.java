@@ -178,16 +178,16 @@ public class TaskMenu {
             System.out.println("  No tasks found.");
         } else {
             System.out.println("=======================================");
-            tasks.forEach(this::printTask);
+            tasks.forEach(TaskMenu::printTask);
             System.out.println("=======================================");
         }
         pressEnterToContinue();
     }
 
-    private void printTask(TaskResponseDto t) {
+    public static void printTask(TaskResponseDto t) {
         System.out.printf("  [%d] %s  |  %s  |  %s%n",
                 t.id(), t.title(), t.priority(), t.isCompleted() ? "• Completed" : "○ Pending");
-        System.out.println("      " + t.description());
+        if(!t.description().isBlank()) System.out.println("      " + t.description());
         if (t.deadline() != null) {
             System.out.println("      Deadline: " + t.deadline().format(DATE_TIME_FORMATTER));
         }
@@ -257,6 +257,8 @@ public class TaskMenu {
                 return Optional.of(deadline);
             } catch (DateTimeParseException e) {
                 System.out.println("  Invalid format, try again.");
+            } catch (IllegalArgumentException e) {
+                System.out.println("  " + e.getMessage() + " Try again.");
             }
         }
     }
