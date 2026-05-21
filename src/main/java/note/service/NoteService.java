@@ -22,4 +22,8 @@ public interface NoteService {
     boolean existsById(int id);
 
     List<NoteResponseDTO> findByTaskId(int taskId);
+
+    void titleValidation(String title);
+
+    void descriptionValidation(String description);
 }

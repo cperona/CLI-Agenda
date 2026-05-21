@@ -7,6 +7,7 @@ import event.repository.EventRepository;
 import event.repository.EventRepositoryMysql;
 import event.service.EventService;
 import event.service.EventServiceImpl;
+import note.cli.NoteMenu;
 import note.repository.NoteRepository;
 import note.repository.NoteRepositoryMysql;
 import note.service.NoteService;
@@ -44,6 +45,8 @@ public class DependencyConfig {
     public TaskMenu  buildTaskMenu()      { return new TaskMenu(taskServiceImpl); }
 //    public NoteMenu  buildNoteMenu()      { return new NoteMenu(noteService); }
     public EventMenu buildEventMenu()     { return new EventMenu(eventServiceImpl, taskServiceImpl); }
+
+    public NoteMenu buildNoteMenu() { return new NoteMenu(noteServiceImpl, taskServiceImpl);}
 
     public boolean notifyUpcomingEvents() {
         return eventServiceImpl.notifyObservers();
