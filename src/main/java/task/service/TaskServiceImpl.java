@@ -110,6 +110,13 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.findByEventId(eventId).stream().map(this::toDto).toList();
     }
 
+    public void assignToEvent(int taskId, int eventId) {
+        Task existing = taskRepository.findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException("Task not found: " + taskId));
+        existing.setEventId(eventId);
+        taskRepository.update(existing);
+    }
+
     // ------------------- Validations -------------------------
     public void titleValidation(String title) {
         int maxLength = 80;
