@@ -10,7 +10,7 @@ This utility offers the option to filter and order by priority, state, date, and
 
 ## 🚀 Set up and install
 1. Clone this repository: `git clone github.com/cperona/CLI-Agenda`
-2. Run: `sudo docker compose up -d`
+2. Run: `sudo docker compose up -d --remove-orphans `
 
 ## 🧩 Required
 - Docker
