@@ -53,14 +53,18 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Optional<TaskResponseDto> findById(int id) {
-        return taskRepository.findById(id).map(this::toDto);
+    public TaskResponseDto findById(int id) {
+        Optional<Task> result = taskRepository.findById(id);
+        if (result.isEmpty()) {
+            throw new TaskNotFoundException();
+        }
+        return toDto(result.get());
     }
 
     @Override
     public TaskResponseDto updateTask(int id, TaskRequestDto dto) {
         Task existing = taskRepository.findById(id)
-                .orElseThrow(() -> new TaskNotFoundException("Task not found with id: " + id));
+                .orElseThrow(TaskNotFoundException::new);
 
         titleValidation(dto.title());
         existing.setTitle(dto.title());
@@ -81,14 +85,14 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void deleteTask(int id) {
         taskRepository.findById(id)
-                .orElseThrow(() -> new TaskNotFoundException("Task not found with id: " + id));
+                .orElseThrow(TaskNotFoundException::new);
         taskRepository.delete(id);
     }
 
     @Override
     public void markCompleted(int id) {
         Task existing = taskRepository.findById(id)
-                .orElseThrow(() -> new TaskNotFoundException("Task not found with id: " + id));
+                .orElseThrow(TaskNotFoundException::new);
         existing.setIsCompleted(true);
         taskRepository.update(existing);
     }
@@ -126,7 +130,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void assignToEvent(int taskId, int eventId) {
         Task existing = taskRepository.findById(taskId)
-                .orElseThrow(() -> new TaskNotFoundException("Task not found: " + taskId));
+                .orElseThrow(TaskNotFoundException::new);
         existing.setEventId(eventId);
         taskRepository.update(existing);
     }

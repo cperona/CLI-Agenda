@@ -1,18 +1,13 @@
 package event.cli;
 
-import common.exception.EventIdDoesNotExists;
-import common.exception.TaskNotFoundException;
 import event.dto.EventRequestDTO;
 import event.dto.EventResponseDTO;
 import event.service.EventService;
-import event.service.EventServiceImpl;
 import task.cli.TaskMenu;
 import task.dto.TaskResponseDto;
 import task.service.TaskService;
-import task.service.TaskServiceImpl;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -85,39 +80,39 @@ public class EventMenu {
             );
             System.out.println("  • Event created with id: " + created.id());
             pressEnterToContinue();
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error creating Event \n"+ e.getMessage());
+        } catch (RuntimeException e) {
+            System.out.println("Error creating Event: "+ e.getMessage());
         }
     }
 
     public void editEvent() {
         System.out.println("Edit event, insert...");
         int id = readId();
-        Optional<EventResponseDTO> found = eventServiceImpl.findById(id);
-        if (found.isEmpty()) {
-            System.out.println("  x Event not found.");
+        try {
+            EventResponseDTO existing = eventServiceImpl.selectEventById(id);
+
+            System.out.println(" • Event found, Leave blank to keep current value.");
+
+            String title = readTitle(false);
+            if (title.isBlank()) title = existing.title();
+
+            String desc = readDescription();
+            if (desc.isBlank()) desc = existing.description();
+
+            Optional<LocalDate> eventDate = readEventDate(false);
+            LocalDate newEventDate = eventDate.orElse(existing.event_date());
+
+            Optional<Boolean> recurring = eventIsRecurring(false);
+            boolean newRecurring = recurring.orElse(existing.recurring());
+
+            eventServiceImpl.updateEvent(new EventRequestDTO(title, desc, newEventDate, newRecurring), id);
+            System.out.println("  • Event updated.");
             pressEnterToContinue();
-            return;
+
+        } catch (RuntimeException e) {
+            System.out.println("  x " + e.getMessage());
+            pressEnterToContinue();
         }
-
-        EventResponseDTO existing = found.get();
-        System.out.println(" • Event found, Leave blank to keep current value.");
-
-        String title = readTitle(false);
-        if (title.isBlank()) title = existing.title();
-
-        String desc = readDescription();
-        if (desc.isBlank()) desc = existing.description();
-
-        Optional<LocalDate> eventDate = readEventDate(false);
-        LocalDate newEventDate = eventDate.orElse(existing.event_date());
-
-        Optional<Boolean> recurring = eventIsRecurring(false);
-        boolean newRecurring = recurring.orElse(existing.recurring());
-
-        eventServiceImpl.updateEvent(new EventRequestDTO(title, desc, newEventDate, newRecurring), id);
-        System.out.println("  • Event updated.");
-        pressEnterToContinue();
     }
 
     public void deleteEvent() {
@@ -136,7 +131,7 @@ public class EventMenu {
         try {
             eventServiceImpl.deleteById(id);
             System.out.println("  • Event deleted.");
-        } catch (EventIdDoesNotExists e) {
+        } catch (RuntimeException e) {
             System.out.println("  x " + e.getMessage());
         }
         pressEnterToContinue();
@@ -145,12 +140,13 @@ public class EventMenu {
     public void findEventById() {
         System.out.println("Find event by id, insert...");
         int id = readId();
-        Optional<EventResponseDTO> found = eventServiceImpl.findById(id);
-        if (found.isEmpty()) {
-            System.out.println("  No events found.");
-        } else {
+        try {
+            EventResponseDTO found = eventServiceImpl.selectEventById(id);
             List<TaskResponseDto> tasks = taskServiceImpl.listByEvent(id);
-            printEvent(found.get(), tasks);
+            printEvent(found, tasks);
+        } catch (RuntimeException e){
+            System.out.println("  x " + e.getMessage());
+            pressEnterToContinue();
         }
         pressEnterToContinue();
     }
@@ -185,42 +181,35 @@ public class EventMenu {
         System.out.println("Event...");
 
         int eventId = readId();
-        Optional<EventResponseDTO> found = eventServiceImpl.findById(eventId);
-        if (found.isEmpty()) {
-            System.out.println("  x Event not found.");
-            pressEnterToContinue();
-            return;
-        }
-
-        System.out.println("Task...");
-        int taskId = readId();
-        Optional<TaskResponseDto> task = taskServiceImpl.findById(taskId);
-        if (task.isEmpty()) {
-            System.out.println("  x Task not found.");
-            pressEnterToContinue();
-            return;
-        }
-
-        Integer tasksEventIdExist = task.get().eventId();
-        if (tasksEventIdExist != null) {
-            System.out.println("Task is already assigned to an event.");
-            System.out.print("Are you sure you want to assign to this event? (yes/no): ");
-            String confirmation = scanner.nextLine().trim().toLowerCase();
-
-            if (!confirmation.equalsIgnoreCase("yes")) {
-                System.out.println("  • Assign cancelled.");
-                pressEnterToContinue();
-                return;
-            }
-        }
-
         try {
-            taskServiceImpl.assignToEvent(taskId, eventId);
-        } catch (EventIdDoesNotExists | TaskNotFoundException e) {
+            EventResponseDTO eventFound = eventServiceImpl.selectEventById(eventId);
+
+            System.out.println("Task...");
+            int taskId = readId();
+            TaskResponseDto task = taskServiceImpl.findById(taskId);
+
+            Integer tasksEventIdExist = task.eventId();
+            if (tasksEventIdExist != null) {
+                System.out.println("Task is already assigned to an event.");
+                System.out.print("Are you sure you want to assign to this event? (yes/no): ");
+                String confirmation = scanner.nextLine().trim().toLowerCase();
+
+                if (!confirmation.equalsIgnoreCase("yes")) {
+                    System.out.println("  • Assign cancelled.");
+                    pressEnterToContinue();
+                    return;
+                }
+            }
+
+            taskServiceImpl.assignToEvent(taskId, eventFound.id());
+
+            System.out.println("  Task ["+ taskId + "] assigned to event [" + eventId + "]");
+            pressEnterToContinue();
+
+        } catch (RuntimeException e) {
             System.out.println("  x " + e.getMessage());
+            pressEnterToContinue();
         }
-        System.out.println("  Task ["+ taskId + "] assigned to event [" + eventId + "]");
-        pressEnterToContinue();
     }
 
     public void listTasksByEvent() {
@@ -228,27 +217,28 @@ public class EventMenu {
         System.out.println("Event...");
         int id = readId();
 
-        Optional<EventResponseDTO> found = eventServiceImpl.findById(id);
-        if (found.isEmpty()) {
-            System.out.println("  x Event not found.");
-            pressEnterToContinue();
-            return;
-        }
-        List<TaskResponseDto> tasks = taskServiceImpl.listByEvent(id);
-        if (tasks.isEmpty()) {
-            System.out.println("  x This event has no tasks assigned");
-            pressEnterToContinue();
-            return;
-        }
+        try {
+            EventResponseDTO found = eventServiceImpl.selectEventById(id);
 
-        System.out.println("===============EVENT==================");
-        printEvent(found.get(), new ArrayList<>());
-        System.out.println("===============TASKS==================");
-        for (TaskResponseDto task : tasks) {
-            TaskMenu.printTask(task);
+            List<TaskResponseDto> tasks = taskServiceImpl.listByEvent(id);
+
+            System.out.println("===============EVENT==================");
+            printEvent(found, new ArrayList<>());
+            System.out.println("===============TASKS==================");
+            if(tasks.isEmpty()) {
+                System.out.println("  None");
+            } else {
+                for (TaskResponseDto task : tasks) {
+                    TaskMenu.printTask(task);
+                }
+            }
+            System.out.println("=======================================");
+            pressEnterToContinue();
+
+        } catch (RuntimeException e) {
+            System.out.println("  x " + e.getMessage());
+            pressEnterToContinue();
         }
-        System.out.println("=======================================");
-        pressEnterToContinue();
     }
 
     private void pressEnterToContinue() {
@@ -315,8 +305,7 @@ public class EventMenu {
         while (true) {
             System.out.print("ID: ");
             try {
-                Integer id = Integer.parseInt(scanner.nextLine().trim());
-                return id;
+                return Integer.parseInt(scanner.nextLine().trim());
             } catch (NumberFormatException e) {
                 System.out.println("  Invalid ID, try again.");
             }

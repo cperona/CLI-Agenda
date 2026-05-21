@@ -65,7 +65,7 @@ public class TaskRepositoryMysql implements TaskRepository {
 
             return task;
         } catch (SQLException e) {
-            throw new TaskSQLException("Error saving task", e);
+            throw new TaskSQLException("Error saving task");
         }
     }
 
@@ -96,7 +96,7 @@ public class TaskRepositoryMysql implements TaskRepository {
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            throw new TaskSQLException("Error updating task", e);
+            throw new TaskSQLException("Error updating task");
         }
     }
 
@@ -107,7 +107,7 @@ public class TaskRepositoryMysql implements TaskRepository {
             pstmt.setInt(1, id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            throw new TaskSQLException("Error deleting task", e);
+            throw new TaskSQLException("Error deleting task");
         }
     }
 
@@ -119,7 +119,8 @@ public class TaskRepositoryMysql implements TaskRepository {
             ResultSet rs = pstmt.executeQuery();
             return rs.next() ? Optional.of(mapRow(rs)) : Optional.empty();
         } catch (SQLException e) {
-            throw new TaskSQLException("Error finding task by id", e);
+            throw new TaskSQLException("Error finding task by id"
+            );
         }
     }
 
@@ -132,7 +133,7 @@ public class TaskRepositoryMysql implements TaskRepository {
             while (rs.next()) list.add(mapRow(rs));
             return list;
         } catch (SQLException e) {
-            throw new TaskSQLException("Error listing tasks", e);
+            throw new TaskSQLException("Error listing tasks");
         }
     }
 
@@ -146,7 +147,7 @@ public class TaskRepositoryMysql implements TaskRepository {
             while (rs.next()) list.add(mapRow(rs));
             return list;
         } catch (SQLException e) {
-            throw new TaskSQLException("Error filtering tasks by priority", e);
+            throw new TaskSQLException("Error filtering tasks by priority");
         }
     }
 
@@ -160,7 +161,7 @@ public class TaskRepositoryMysql implements TaskRepository {
             while (rs.next()) list.add(mapRow(rs));
             return list;
         } catch (SQLException e) {
-            throw new TaskSQLException("Error filtering tasks by completion", e);
+            throw new TaskSQLException("Error filtering tasks by completed");
         }
     }
 
@@ -171,7 +172,7 @@ public class TaskRepositoryMysql implements TaskRepository {
             WHERE deadline IS NOT NULL
               AND is_completed = false
               AND deadline >= NOW()
-            ORDER BY deadline ASC
+            ORDER BY deadline ASC, priority DESC;
             """;
         try (PreparedStatement ps = connection().prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
@@ -179,7 +180,7 @@ public class TaskRepositoryMysql implements TaskRepository {
             while (rs.next()) list.add(mapRow(rs));
             return list;
         } catch (SQLException e) {
-            throw new TaskSQLException("Error finding upcoming tasks", e);
+            throw new TaskSQLException("Error finding upcoming tasks");
         }
     }
 
@@ -193,7 +194,7 @@ public class TaskRepositoryMysql implements TaskRepository {
             while (rs.next()) list.add(mapRow(rs));
             return list;
         } catch (SQLException e) {
-            throw new TaskSQLException("Error finding tasks by event", e);
+            throw new TaskSQLException("Error finding tasks by event");
         }
     }
 
@@ -203,7 +204,7 @@ public class TaskRepositoryMysql implements TaskRepository {
         try (PreparedStatement pstmt = connection().prepareStatement(sql)) {
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            throw new TaskSQLException("Error deleting tasks", e);
+            throw new TaskSQLException("Error deleting tasks");
         }
     }
 }
