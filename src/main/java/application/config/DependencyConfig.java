@@ -2,6 +2,7 @@ package application.config;
 
 import common.persistence.DatabaseConnection;
 import event.Observer.EventNotificationConsole;
+import event.cli.EventMenu;
 import event.repository.EventRepository;
 import event.repository.EventRepositoryMysql;
 import event.service.EventServiceImpl;
@@ -39,7 +40,7 @@ public class DependencyConfig {
 
     public TaskMenu  buildTaskMenu()      { return new TaskMenu(taskServiceImpl); }
 //    public NoteMenu  buildNoteMenu()      { return new NoteMenu(noteService); }
-//    public EventMenu buildEventMenu()     { return new EventMenu(eventService, taskService); }
+    public EventMenu buildEventMenu()     { return new EventMenu(eventServiceImpl, taskServiceImpl); }
 
     public boolean notifyUpcomingEvents() {
         return eventServiceImpl.notifyObservers();
