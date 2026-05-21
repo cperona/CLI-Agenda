@@ -78,4 +78,17 @@ public class NoteServiceImpl implements NoteService{
         if (description.length() > maxLength)
             throw new IllegalArgumentException("Description is too long. Max " + maxLength + " characters.");
     }
+
+    @Override
+    public Optional<NoteResponseDTO> findById(int id) {
+        Optional<Note> note = noteRespository.findById(id);
+        if(note.isPresent())
+        {
+            return Optional.of(NoteMapper.toDTO(note.get()));
+        }
+        else
+        {
+            return Optional.empty();
+        }
+    }
 }
