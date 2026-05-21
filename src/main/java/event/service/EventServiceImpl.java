@@ -1,7 +1,6 @@
 package event.service;
 
 import common.exception.EventIdDoesNotExists;
-import common.exception.TaskNotFoundException;
 import event.Observer.EventSubject;
 import event.Observer.EventObserver;
 import event.dto.EventMapper;
@@ -55,11 +54,6 @@ public class EventServiceImpl implements EventService, EventSubject {
         eventRepository.findById(id)
                 .orElseThrow(EventIdDoesNotExists::new);
         eventRepository.delete(id);
-    }
-
-    @Override
-    public Optional<EventResponseDTO> findById(int id) {
-        return eventRepository.findById(id).map(EventMapper::toDTO);
     }
 
     @Override
