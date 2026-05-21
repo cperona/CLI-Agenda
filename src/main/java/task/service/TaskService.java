@@ -7,7 +7,6 @@ import task.model.Task;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 public interface TaskService {
     TaskResponseDto toDto(Task t);
@@ -15,7 +14,7 @@ public interface TaskService {
 
     TaskResponseDto createTask(TaskRequestDto dto);
 
-    Optional<TaskResponseDto> findById(int id);
+    TaskResponseDto findById(int id);
 
     TaskResponseDto updateTask(int id, TaskRequestDto dto);
 
@@ -35,7 +34,7 @@ public interface TaskService {
 
     List<TaskResponseDto> listByEvent(int eventId);
 
-    public void assignToEvent(int taskId, int eventId);
+    void assignToEvent(int taskId, int eventId);
 
     void titleValidation(String title);
 
