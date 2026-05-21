@@ -15,3 +15,7 @@ This utility offers the option to filter and order by priority, state, date, and
 ## 🧩 Required
 - Docker
 - Java-25
+
+## 🧪 Tests
+1. Run: `sudo docker compose -f docker-compose-test.yml up --remove-orphans`
+2. To run all the tests: `runAllTests` gradle run task
