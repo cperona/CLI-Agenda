@@ -199,6 +199,19 @@ public class EventMenu {
             return;
         }
 
+        Integer tasksEventIdExist = task.get().eventId();
+        if (tasksEventIdExist != null) {
+            System.out.println("Task is already assigned to an event.");
+            System.out.print("Are you sure you want to assign to this event? (yes/no): ");
+            String confirmation = scanner.nextLine().trim().toLowerCase();
+
+            if (!confirmation.equalsIgnoreCase("yes")) {
+                System.out.println("  • Assign cancelled.");
+                pressEnterToContinue();
+                return;
+            }
+        }
+
         try {
             taskServiceImpl.assignToEvent(taskId, eventId);
         } catch (EventIdDoesNotExists | TaskNotFoundException e) {
