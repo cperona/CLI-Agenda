@@ -121,7 +121,7 @@ public class TaskMenu {
         System.out.print("Are you sure you want to delete this task? (yes/no): ");
         String confirmation = scanner.nextLine().trim().toLowerCase();
 
-        if (!confirmation.equals("yes")) {
+        if (!confirmation.equalsIgnoreCase("yes")) {
             System.out.println("  • Deletion cancelled.");
             pressEnterToContinue();
             return;
