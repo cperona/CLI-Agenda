@@ -6,7 +6,6 @@ import event.dto.EventResponseDTO;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 public interface EventService {
     EventResponseDTO insertEvent(EventRequestDTO event);
@@ -18,8 +17,6 @@ public interface EventService {
     EventResponseDTO selectEventById(int id);
 
     void deleteById(int id);
-
-    Optional<EventResponseDTO> findById(int id);
 
     boolean existsById(int id);
 
