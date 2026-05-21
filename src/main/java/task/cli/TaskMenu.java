@@ -4,6 +4,7 @@ import common.exception.TaskNotFoundException;
 import task.dto.TaskRequestDto;
 import task.dto.TaskResponseDto;
 import task.model.Priority;
+import task.service.TaskService;
 import task.service.TaskServiceImpl;
 
 import java.time.LocalDateTime;
@@ -15,13 +16,13 @@ import java.util.Scanner;
 
 public class TaskMenu {
 
-    private final TaskServiceImpl taskServiceImpl;
+    private final TaskService taskServiceImpl;
     private final Scanner scanner;
 
     private static final String DATE_PATTERN = "dd/MM/yyyy HH:mm";
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
 
-    public TaskMenu(TaskServiceImpl taskServiceImpl) {
+    public TaskMenu(TaskService taskServiceImpl) {
         this.taskServiceImpl = taskServiceImpl;
         scanner = new Scanner(System.in);
     }

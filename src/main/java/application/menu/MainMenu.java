@@ -31,8 +31,8 @@ public class MainMenu {
             String option = sc.nextLine().trim();
             switch (option) {
                 case "1" -> config.buildTaskMenu().showMenu();
-//                case "2" -> config.buildNoteMenu().showMenu();
-//                case "3" -> config.buildEventMenu().showMenu();
+             //   case "2" -> config.buildNoteMenu().showMenu();
+                case "3" -> config.buildEventMenu().showMenu();
                 case "0" -> running = false;
                 default -> System.out.println("  Invalid option.");
             }

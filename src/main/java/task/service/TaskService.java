@@ -34,4 +34,13 @@ public interface TaskService {
     List<TaskResponseDto> listUpcoming();
 
     List<TaskResponseDto> listByEvent(int eventId);
+
+    void titleValidation(String title);
+
+    void descriptionValidation(String description);
+
+    void validateDeadline(LocalDateTime deadline);
+
+    Priority defaultPriorityIfNull(Priority priority);
+
 }

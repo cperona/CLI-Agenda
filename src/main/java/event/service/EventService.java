@@ -1,9 +1,11 @@
 package event.service;
 
+import event.Observer.EventObserver;
 import event.dto.EventRequestDTO;
 import event.dto.EventResponseDTO;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface EventService {
@@ -22,4 +24,16 @@ public interface EventService {
     List<EventResponseDTO> findAllByDateAfter(LocalDate date);
 
     List<EventResponseDTO> findByUpcoming(int days);
+
+    void titleValidation(String title);
+
+    void descriptionValidation(String description);
+
+    void validateeventDate(LocalDate eventDate);
+
+    void addObserver(EventObserver observer);
+
+    void removeObserver(EventObserver observer);
+
+    boolean notifyObservers();
 }

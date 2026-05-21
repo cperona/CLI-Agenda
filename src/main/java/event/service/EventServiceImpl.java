@@ -10,6 +10,7 @@ import event.model.Event;
 import event.repository.EventRepository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -114,5 +115,31 @@ public class EventServiceImpl implements EventService, EventSubject {
             }
         }
         return true;
+    }
+
+    // ------------------- Validations -------------------------
+    @Override
+    public void titleValidation(String title) {
+        int maxLength = 80;
+        if (title == null || title.isEmpty()) throw new IllegalArgumentException("Title is empty.");
+        if (title.length() > maxLength)
+            throw new IllegalArgumentException("Title is too long. Max " + maxLength + " characters.");
+    }
+
+    @Override
+    public void descriptionValidation(String description) {
+        int maxLength = 255;
+        if (description.length() > maxLength)
+            throw new IllegalArgumentException("Description is too long. Max " + maxLength + " characters.");
+    }
+
+    @Override
+    public void validateeventDate(LocalDate eventDate) {
+        if (eventDate == null) return;
+        if (eventDate.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException(
+                    "The event_date cannot be earlier than the current date and time."
+            );
+        }
     }
 }
