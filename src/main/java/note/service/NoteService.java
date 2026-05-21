@@ -7,6 +7,7 @@ import note.dto.NoteResponseDTO;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface NoteService {
     NoteResponseDTO insertNote(NoteRequestDTO note);
@@ -22,4 +23,10 @@ public interface NoteService {
     boolean existsById(int id);
 
     List<NoteResponseDTO> findByTaskId(int taskId);
+
+    void titleValidation(String title);
+
+    void descriptionValidation(String description);
+
+    Optional<NoteResponseDTO> findById(int id);
 }

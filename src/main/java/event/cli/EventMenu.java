@@ -72,7 +72,7 @@ public class EventMenu {
         }
     }
 
-    public void createEvent() {
+    private void createEvent() {
         try {
             System.out.println("Creating Event, insert...");
             String title = readTitle(true);
@@ -90,8 +90,8 @@ public class EventMenu {
         }
     }
 
-    public void editEvent() {
-        System.out.println("Edit event, insert...");
+    private void editEvent() {
+        System.out.println("Edit event, update...");
         int id = readId();
         Optional<EventResponseDTO> found = eventServiceImpl.findById(id);
         if (found.isEmpty()) {
@@ -120,7 +120,7 @@ public class EventMenu {
         pressEnterToContinue();
     }
 
-    public void deleteEvent() {
+    private void deleteEvent() {
         System.out.println("Delete event, insert...");
         int id = readId();
 
@@ -142,7 +142,7 @@ public class EventMenu {
         pressEnterToContinue();
     }
 
-    public void findEventById() {
+    private void findEventById() {
         System.out.println("Find event by id, insert...");
         int id = readId();
         Optional<EventResponseDTO> found = eventServiceImpl.findById(id);
@@ -180,7 +180,7 @@ public class EventMenu {
         pressEnterToContinue();
     }
 
-    public void assignTaskToEvent() {
+    private void assignTaskToEvent() {
         System.out.println("Assign task to event, insert...");
         System.out.println("Event...");
 
@@ -223,7 +223,7 @@ public class EventMenu {
         pressEnterToContinue();
     }
 
-    public void listTasksByEvent() {
+    private void listTasksByEvent() {
         System.out.println("Listing tasks by event, insert...");
         System.out.println("Event...");
         int id = readId();
