@@ -118,9 +118,16 @@ public class EventServiceImplTest {
     @Test
     public void deleteByIdShouldDelegateToRepository() {
         int id = 1;
-        doNothing().when(eventRepository).delete(id);
+
+        Event event = new Event();
+        event.setId(id);
+
+        when(eventRepository.findById(id))
+                .thenReturn(Optional.of(event));
+
         eventService.deleteById(id);
-        verify(eventRepository, times(1)).delete(id);
+
+        verify(eventRepository).delete(id);
     }
 
     @Test

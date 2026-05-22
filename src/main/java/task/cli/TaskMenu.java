@@ -1,11 +1,9 @@
 package task.cli;
 
-import common.exception.TaskNotFoundException;
 import task.dto.TaskRequestDto;
 import task.dto.TaskResponseDto;
 import task.model.Priority;
 import task.service.TaskService;
-import task.service.TaskServiceImpl;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -81,38 +79,40 @@ public class TaskMenu {
             );
             System.out.println("  • Task created with id: " + created.id());
             pressEnterToContinue();
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error creating task \n"+ e.getMessage());
+        } catch (RuntimeException e) {
+            System.out.println("Error creating task: " + e.getMessage());
+            pressEnterToContinue();
         }
     }
 
     public void editTask() {
         System.out.println("Edit task, insert...");
-        Integer id = readId();
-        Optional<TaskResponseDto> found = taskServiceImpl.findById(id);
-        if (found.isEmpty()) {
-            System.out.println("  x Task not found.");
+        int id = readId();
+        try {
+            TaskResponseDto existing = taskServiceImpl.findById(id);
+
+            System.out.println(" • Task found, Leave blank to keep current value.");
+
+            String title = readTitle(false);
+            if (title.isBlank()) title = existing.title();
+
+            String desc = readDescription(false);
+            if (desc.isBlank()) desc = existing.description();
+
+            Optional<LocalDateTime> newDeadline = readDeadline();
+            LocalDateTime deadline = newDeadline.orElse(existing.deadline());
+
+            Optional<Priority> newPriority = readPriority();
+            Priority priority =  newPriority.orElse(existing.priority());
+
+            taskServiceImpl.updateTask(id, new TaskRequestDto(title, desc, deadline, priority, existing.eventId()));
+            System.out.println("  • Task updated.");
             pressEnterToContinue();
-            return;
+
+        } catch (RuntimeException e) {
+            System.out.println("  x " + e.getMessage());
+            pressEnterToContinue();
         }
-        TaskResponseDto existing = found.get();
-        System.out.println(" • Task found, Leave blank to keep current value.");
-
-        String title = readTitle(false);
-        if (title.isBlank()) title = existing.title();
-
-        String desc = readDescription(false);
-        if (desc.isBlank()) desc = existing.description();
-
-        Optional<LocalDateTime> newDeadline = readDeadline();
-        LocalDateTime deadline = newDeadline.orElse(existing.deadline());
-
-        Optional<Priority> newPriority = readPriority();
-        Priority priority =  newPriority.orElse(existing.priority());
-
-        taskServiceImpl.updateTask(id, new TaskRequestDto(title, desc, deadline, priority, existing.eventId()));
-        System.out.println("  • Task updated.");
-        pressEnterToContinue();
     }
 
     public void deleteTask() {
@@ -131,7 +131,7 @@ public class TaskMenu {
         try {
             taskServiceImpl.deleteTask(id);
             System.out.println("  • Task deleted.");
-        } catch (TaskNotFoundException e) {
+        } catch (RuntimeException e) {
             System.out.println("  x " + e.getMessage());
         }
         pressEnterToContinue();
@@ -142,7 +142,7 @@ public class TaskMenu {
             System.out.println("Mark task as completed, insert...");
             taskServiceImpl.markCompleted(readId());
             System.out.println("  • Task marked as completed.");
-        } catch (TaskNotFoundException e) {
+        } catch (RuntimeException e) {
             System.out.println("  x " + e.getMessage());
         }
         pressEnterToContinue();
@@ -151,11 +151,11 @@ public class TaskMenu {
     public void findTaskById() {
         System.out.println("Find task by id, insert...");
         int id = readId();
-        Optional<TaskResponseDto> found = taskServiceImpl.findById(id);
-        if (found.isEmpty()) {
-            System.out.println("  No tasks found.");
-        } else {
-            printTask(found.get());
+        try {
+            TaskResponseDto found = taskServiceImpl.findById(id);
+            printTask(found);
+        } catch (RuntimeException e) {
+            System.out.println("  x " + e.getMessage());
         }
         pressEnterToContinue();
     }
@@ -228,7 +228,7 @@ public class TaskMenu {
                 taskServiceImpl.descriptionValidation(input);
                 return input;
             } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage() + "\n Try again.");
+                System.out.println(e.getMessage() + " Try again.");
             }
         }
     }
@@ -268,8 +268,7 @@ public class TaskMenu {
         while (true) {
             System.out.print("ID: ");
             try {
-                Integer id = Integer.parseInt(scanner.nextLine().trim());
-                return id;
+                return Integer.parseInt(scanner.nextLine().trim());
             } catch (NumberFormatException e) {
                 System.out.println("  Invalid ID, try again.");
             }

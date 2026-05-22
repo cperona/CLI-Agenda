@@ -78,23 +78,19 @@ class TaskServiceImplTest {
     @Test
     void findByIdShouldReturnDtoWhenExists() {
         when(taskRepository.findById(1)).thenReturn(Optional.of(task));
-
-        Optional<TaskResponseDto> result = taskService.findById(1);
-
-        assertTrue(result.isPresent());
-        assertEquals(1, result.get().id());
-        assertEquals("Test task", result.get().title());
-        verify(taskRepository).findById(1);
+        TaskResponseDto result = taskService.findById(1);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(1, result.id());
+        Assertions.assertEquals("Test task", result.title());
+        verify(taskRepository, times(1)).findById(1);
     }
 
     @Test
-    void findByIdShouldReturnEmptyWhenNotExists() {
-        when(taskRepository.findById(1)).thenReturn(Optional.empty());
-
-        Optional<TaskResponseDto> result = taskService.findById(1);
-
-        assertTrue(result.isEmpty());
-        verify(taskRepository).findById(1);
+    public void findTaskByIdShouldThrowExceptionWhenNotFound() {
+        int id = 999;
+        when(taskRepository.findById(id)).thenReturn(Optional.empty());
+        Assertions.assertThrows(TaskNotFoundException.class, () -> taskService.findById(id));
+        verify(taskRepository, times(1)).findById(id);
     }
 
     @Test
