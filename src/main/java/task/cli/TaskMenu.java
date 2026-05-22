@@ -1,5 +1,7 @@
 package task.cli;
 
+import common.exception.TaskNotFoundException;
+import common.exception.TaskSQLException;
 import task.dto.TaskRequestDto;
 import task.dto.TaskResponseDto;
 import task.model.Priority;
@@ -79,7 +81,7 @@ public class TaskMenu {
             );
             System.out.println("  • Task created with id: " + created.id());
             pressEnterToContinue();
-        } catch (RuntimeException e) {
+        } catch (TaskSQLException e) {
             System.out.println("Error creating task: " + e.getMessage());
             pressEnterToContinue();
         }
@@ -109,7 +111,7 @@ public class TaskMenu {
             System.out.println("  • Task updated.");
             pressEnterToContinue();
 
-        } catch (RuntimeException e) {
+        } catch (TaskNotFoundException | TaskSQLException e) {
             System.out.println("  x " + e.getMessage());
             pressEnterToContinue();
         }
@@ -118,7 +120,7 @@ public class TaskMenu {
     public void deleteTask() {
         System.out.println("Delete task, insert...");
         int id = readId();
-
+        TaskResponseDto task = taskServiceImpl.findById(id);
         System.out.print("Are you sure you want to delete this task? (yes/no): ");
         String confirmation = scanner.nextLine().trim().toLowerCase();
 
@@ -131,7 +133,7 @@ public class TaskMenu {
         try {
             taskServiceImpl.deleteTask(id);
             System.out.println("  • Task deleted.");
-        } catch (RuntimeException e) {
+        } catch (TaskSQLException | TaskNotFoundException e) {
             System.out.println("  x " + e.getMessage());
         }
         pressEnterToContinue();
@@ -142,7 +144,7 @@ public class TaskMenu {
             System.out.println("Mark task as completed, insert...");
             taskServiceImpl.markCompleted(readId());
             System.out.println("  • Task marked as completed.");
-        } catch (RuntimeException e) {
+        } catch (TaskSQLException e) {
             System.out.println("  x " + e.getMessage());
         }
         pressEnterToContinue();
@@ -154,7 +156,7 @@ public class TaskMenu {
         try {
             TaskResponseDto found = taskServiceImpl.findById(id);
             printTask(found);
-        } catch (RuntimeException e) {
+        } catch (TaskSQLException | TaskNotFoundException e) {
             System.out.println("  x " + e.getMessage());
         }
         pressEnterToContinue();

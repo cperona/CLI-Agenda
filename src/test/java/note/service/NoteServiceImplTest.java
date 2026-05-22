@@ -1,5 +1,6 @@
 package note.service;
 
+import common.exception.NoteIdDoesNotExists;
 import note.dto.NoteRequestDTO;
 import note.dto.NoteResponseDTO;
 import note.model.Note;
@@ -140,4 +141,37 @@ public class NoteServiceImplTest {
         assertEquals(10, result.get(0).task_id());
         verify(noteRepository).findByTaskId(10);
     }
+
+    @Test
+    void findById_whenNoteExists_returnsNoteResponseDTO() {
+        int id = 1;
+
+        Note note = new Note();
+        note.setId(id);
+        note.setDescription("My note");
+        note.setTask_id(999);
+
+        when(noteRepository.findById(id)).thenReturn(Optional.of(note));
+
+        NoteResponseDTO result = noteService.findById(id);
+
+        assertNotNull(result);
+        assertEquals(id, result.id());
+        assertEquals("My note", result.description());
+        assertEquals(999, result.task_id());
+        verify(noteRepository).findById(id);
+    }
+
+    @Test
+    void findById_whenNoteDoesNotExist_throwsNoteIdDoesNotExists() {
+        int id = 99;
+
+        when(noteRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(NoteIdDoesNotExists.class,
+                () -> noteService.findById(id));
+
+        verify(noteRepository).findById(id);
+    }
+
 }

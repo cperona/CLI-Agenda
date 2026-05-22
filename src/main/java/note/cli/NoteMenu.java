@@ -1,6 +1,6 @@
 package note.cli;
 
-import common.exception.EventIdDoesNotExists;
+import common.exception.*;
 import event.cli.EventMenu;
 import event.dto.EventRequestDTO;
 import event.dto.EventResponseDTO;
@@ -10,7 +10,6 @@ import note.model.Note;
 import note.service.NoteService;
 import note.service.NoteServiceImpl;
 import task.dto.TaskResponseDto;
-import task.exceptions.TaskIdDoesNotExist;
 import task.model.Task;
 import task.service.TaskService;
 
@@ -71,16 +70,14 @@ public class NoteMenu {
         System.out.printf("List notes by task id.");
         int taskId = readId();
         try {
-            Optional<TaskResponseDto> task = taskServiceImpl.findById(taskId);
-            if (task.isEmpty()) {
-                throw new TaskIdDoesNotExist();
-            }
-            List<NoteResponseDTO> notes = noteServiceImpl.findByTaskId(taskId);
-            for (NoteResponseDTO note : notes) {
-                printNote(note);
-            }
+                TaskResponseDto task = taskServiceImpl.findById(taskId);
+
+                List<NoteResponseDTO> notes = noteServiceImpl.findByTaskId(taskId);
+                for (NoteResponseDTO note : notes) {
+                    printNote(note);
+                }
         }
-        catch(TaskIdDoesNotExist ex)
+        catch(TaskNotFoundException | NoteSQLException ex)
         {
             System.out.println(ex.getMessage());
         }
@@ -89,11 +86,13 @@ public class NoteMenu {
     private void findByNoteId() {
         System.out.println("Find note by id, insert...");
         int id = readId();
-        Optional<NoteResponseDTO> found = noteServiceImpl.findById(id);
-        if (found.isEmpty()) {
-            System.out.println("  No notes found.");
-        } else {
-            printNote(found.get());
+        try
+        {
+            NoteResponseDTO found = noteServiceImpl.findById(id);
+        }
+        catch(NoteIdDoesNotExists | NoteSQLException ex)
+        {
+            System.out.println(ex.getMessage());
         }
         pressEnterToContinue();
     }
@@ -108,26 +107,27 @@ public class NoteMenu {
     private void editNote(){
         System.out.println("Editint Note, update...");
         int id = readId();
-        Optional<NoteResponseDTO> found = noteServiceImpl.findById(id);
-        if (found.isEmpty()) {
-            System.out.println("  x Note not found.");
-            pressEnterToContinue();
-            return;
+        try {
+            NoteResponseDTO found = noteServiceImpl.findById(id);
+
+            System.out.println(" • Note found, Leave blank to keep current value.");
+
+            String desc = readDescription();
+            if (desc.isBlank()) desc = found.description();
+
+            Optional<LocalDate> noteDate = readNoteDate(false);
+            LocalDate newNoteDate = noteDate.orElse(found.created_at());
+
+            Optional<Integer> taskId = readTaskId(false);
+            int newTaskId = taskId.orElse(found.task_id());
+
+            noteServiceImpl.updateNote(new NoteRequestDTO(desc, newNoteDate, newTaskId), id);
+            System.out.println("  • Event updated.");
         }
-        NoteResponseDTO existing = found.get();
-        System.out.println(" • Note found, Leave blank to keep current value.");
-
-        String desc = readDescription();
-        if (desc.isBlank()) desc = existing.description();
-
-        Optional<LocalDate> noteDate = readNoteDate(false);
-        LocalDate newNoteDate = noteDate.orElse(existing.created_at());
-
-        Optional<Integer> taskId = readTaskId(false);
-        int newTaskId = taskId.orElse(existing.task_id());
-
-        noteServiceImpl.updateNote(new NoteRequestDTO(desc, newNoteDate, newTaskId), id);
-        System.out.println("  • Event updated.");
+        catch(NoteIdDoesNotExists | NoteSQLException ex)
+        {
+            System.out.println(ex.getMessage());
+        }
         pressEnterToContinue();
 
     }
@@ -194,15 +194,18 @@ public class NoteMenu {
             }
             try {
                 int taskId = Integer.parseInt(input);
-                if(taskServiceImpl.findById(taskId).isEmpty())
-                {
-                    throw new TaskIdDoesNotExist();
+                try{
+                    TaskResponseDto task = taskServiceImpl.findById(taskId);
+                    return Optional.of(taskId);
                 }
-                return Optional.of(taskId);
+                catch(TaskNotFoundException | TaskSQLException ex)
+                {
+                    ex.getMessage();
+                }
             } catch (NumberFormatException ex) {
                 System.out.println("Introduce números no letras.");
             }
-            catch(TaskIdDoesNotExist ex){
+            catch(TaskNotFoundException ex){
                 System.out.println(ex.getMessage());
             }
         }
@@ -254,7 +257,7 @@ public class NoteMenu {
             try {
                 noteServiceImpl.deleteById(id);
                 System.out.println("  • Note deleted.");
-            } catch (EventIdDoesNotExists e) {
+            } catch (EventIdDoesNotExists | EventSQLException e) {
                 System.out.println("  x " + e.getMessage());
             }
         }

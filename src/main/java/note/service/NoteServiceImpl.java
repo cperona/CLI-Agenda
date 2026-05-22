@@ -80,15 +80,15 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public Optional<NoteResponseDTO> findById(int id) {
+    public NoteResponseDTO findById(int id) {
         Optional<Note> note = noteRespository.findById(id);
         if(note.isPresent())
         {
-            return Optional.of(NoteMapper.toDTO(note.get()));
+            return NoteMapper.toDTO(note.get());
         }
         else
         {
-            return Optional.empty();
+            throw new NoteIdDoesNotExists();
         }
     }
 }
