@@ -17,6 +17,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -36,7 +38,7 @@ public class EventServiceImplTest {
         when(eventRepository.save(any(Event.class))).thenReturn(saved);
         EventResponseDTO result = eventService.insertEvent(request);
 
-        Assertions.assertNotNull(result);
+        assertNotNull(result);
         Assertions.assertEquals(1, result.id());
         Assertions.assertEquals("Concierto", result.title());
         verify(eventRepository, times(1)).save(any(Event.class));
@@ -57,7 +59,7 @@ public class EventServiceImplTest {
 
         doNothing().when(eventRepository).update(any(Event.class));
         EventResponseDTO result = eventService.updateEvent(request, id);
-        Assertions.assertNotNull(result);
+        assertNotNull(result);
         Assertions.assertEquals(id, result.id());
         Assertions.assertEquals("Editado", result.title());
         Assertions.assertEquals("Nueva descripcion", result.description());
@@ -101,7 +103,7 @@ public class EventServiceImplTest {
         existing.setRecurring(false);
         when(eventRepository.findById(id)).thenReturn(Optional.of(existing));
         EventResponseDTO result = eventService.selectEventById(id);
-        Assertions.assertNotNull(result);
+        assertNotNull(result);
         Assertions.assertEquals(id, result.id());
         Assertions.assertEquals("Evento", result.title());
         verify(eventRepository, times(1)).findById(id);
@@ -111,7 +113,7 @@ public class EventServiceImplTest {
     public void selectEventByIdShouldThrowExceptionWhenNotFound() {
         int id = 999;
         when(eventRepository.findById(id)).thenReturn(Optional.empty());
-        Assertions.assertThrows(EventIdDoesNotExists.class, () -> eventService.selectEventById(id));
+        assertThrows(EventIdDoesNotExists.class, () -> eventService.selectEventById(id));
         verify(eventRepository, times(1)).findById(id);
     }
 
@@ -154,4 +156,32 @@ public class EventServiceImplTest {
         Assertions.assertEquals("Evento", result.get(0).title());
         verify(eventRepository, times(1)).findAllByDateAfter(date);
     }
+
+    @Test
+    void selectEventById_whenEventExists_returnsEventResponseDTO() {
+        int id = 1;
+
+        Event event = new Event();
+        event.setId(id);
+        event.setTitle("Conference");
+
+        when(eventRepository.findById(id)).thenReturn(Optional.of(event));
+
+        EventResponseDTO result = eventService.selectEventById(id);
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(id, result.id());
+        Assertions.assertEquals("Conference", result.title());
+        verify(eventRepository).findById(id);
+    }
+
+    @Test
+    void selectEventById_whenEventDoesNotExist_throwsEventIdDoesNotExists() {
+        int id = 99;
+        when(eventRepository.findById(id)).thenReturn(Optional.empty());
+        assertThrows(EventIdDoesNotExists.class,
+                () -> eventService.selectEventById(id));
+        verify(eventRepository).findById(id);
+    }
+
 }

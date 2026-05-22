@@ -6,7 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="b5e98464-a42c-4fc7-863d-b9f7235406c3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/common/exception/NoteIdDoesNotExists.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/common/exception/NoteIdDoesNotExists.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/event/cli/EventMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/event/cli/EventMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/note/cli/NoteMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/note/cli/NoteMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/note/service/NoteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/note/service/NoteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/note/service/NoteServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/note/service/NoteServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/task/cli/TaskMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/task/cli/TaskMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/task/exceptions/TaskIdDoesNotExist.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/event/service/EventServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/event/service/EventServiceImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/note/service/NoteServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/note/service/NoteServiceImplTest.java" afterDir="false" />
     </list>
     <list id="a5763bf0-9ec2-49fb-a74c-1d989c464acb" name="Changes by CiberIntegra_10" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -105,7 +113,7 @@
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/note-menu&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feat/remove-optional-note-service&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,

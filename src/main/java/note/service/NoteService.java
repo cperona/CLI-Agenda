@@ -28,5 +28,5 @@ public interface NoteService {
 
     void descriptionValidation(String description);
 
-    Optional<NoteResponseDTO> findById(int id);
+    NoteResponseDTO findById(int id);
 }

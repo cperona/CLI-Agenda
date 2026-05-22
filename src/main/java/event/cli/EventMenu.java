@@ -1,5 +1,9 @@
 package event.cli;
 
+import common.exception.EventIdDoesNotExists;
+import common.exception.EventSQLException;
+import common.exception.TaskNotFoundException;
+import common.exception.TaskSQLException;
 import event.dto.EventRequestDTO;
 import event.dto.EventResponseDTO;
 import event.service.EventService;
@@ -80,7 +84,7 @@ public class EventMenu {
             );
             System.out.println("  • Event created with id: " + created.id());
             pressEnterToContinue();
-        } catch (RuntimeException e) {
+        } catch (TaskSQLException e) {
             System.out.println("Error creating Event: "+ e.getMessage());
         }
     }
@@ -109,7 +113,7 @@ public class EventMenu {
             System.out.println("  • Event updated.");
             pressEnterToContinue();
 
-        } catch (RuntimeException e) {
+        } catch (EventIdDoesNotExists | EventSQLException e) {
             System.out.println("  x " + e.getMessage());
             pressEnterToContinue();
         }
@@ -131,7 +135,7 @@ public class EventMenu {
         try {
             eventServiceImpl.deleteById(id);
             System.out.println("  • Event deleted.");
-        } catch (RuntimeException e) {
+        } catch (EventSQLException e) {
             System.out.println("  x " + e.getMessage());
         }
         pressEnterToContinue();
@@ -144,9 +148,8 @@ public class EventMenu {
             EventResponseDTO found = eventServiceImpl.selectEventById(id);
             List<TaskResponseDto> tasks = taskServiceImpl.listByEvent(id);
             printEvent(found, tasks);
-        } catch (RuntimeException e){
+        } catch (EventIdDoesNotExists | EventSQLException e){
             System.out.println("  x " + e.getMessage());
-            pressEnterToContinue();
         }
         pressEnterToContinue();
     }
@@ -206,7 +209,7 @@ public class EventMenu {
             System.out.println("  Task ["+ taskId + "] assigned to event [" + eventId + "]");
             pressEnterToContinue();
 
-        } catch (RuntimeException e) {
+        } catch (EventIdDoesNotExists | TaskNotFoundException | EventSQLException | TaskSQLException e) {
             System.out.println("  x " + e.getMessage());
             pressEnterToContinue();
         }
@@ -235,7 +238,7 @@ public class EventMenu {
             System.out.println("=======================================");
             pressEnterToContinue();
 
-        } catch (RuntimeException e) {
+        } catch (EventSQLException | TaskSQLException | EventIdDoesNotExists e) {
             System.out.println("  x " + e.getMessage());
             pressEnterToContinue();
         }
