@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="b5e98464-a42c-4fc7-863d-b9f7235406c3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <list id="a5763bf0-9ec2-49fb-a74c-1d989c464acb" name="Changes by CiberIntegra_10" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -118,7 +117,7 @@
     &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Gradle.CLI-Agenda [runAllTests]">
+  <component name="RunManager">
     <configuration name="CLI-Agenda [runAllTests]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />

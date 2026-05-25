@@ -24,6 +24,120 @@ This utility offers the option to filter and order by priority, state, date, and
 1. Run: `sudo docker compose -f docker-compose-test.yml up --remove-orphans`
 2. To run all the tests: `runAllTests` gradle run task
 
+## Project structure
+
+A typical structure for this project may include:
+
+```text
+├── build.gradle.kts
+├── docker-compose-test.yml
+├── docker-compose.yml
+├── gradle
+│   └── wrapper
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+├── gradlew
+├── gradlew.bat
+├── README.md
+├── settings.gradle.kts
+└── src
+    ├── main
+    │   ├── java
+    │   │   ├── application
+    │   │   │   ├── AgendaApp.java
+    │   │   │   ├── config
+    │   │   │   │   └── DependencyConfig.java
+    │   │   │   └── menu
+    │   │   │       └── MainMenu.java
+    │   │   ├── common
+    │   │   │   ├── exception
+    │   │   │   │   ├── EventIdDoesNotExists.java
+    │   │   │   │   ├── EventSQLException.java
+    │   │   │   │   ├── NoteIdDoesNotExists.java
+    │   │   │   │   ├── NoteSQLException.java
+    │   │   │   │   ├── TaskNotFoundException.java
+    │   │   │   │   └── TaskSQLException.java
+    │   │   │   ├── persistence
+    │   │   │   │   └── DatabaseConnection.java
+    │   │   │   └── utils
+    │   │   ├── event
+    │   │   │   ├── cli
+    │   │   │   │   └── EventMenu.java
+    │   │   │   ├── dto
+    │   │   │   │   ├── EventMapper.java
+    │   │   │   │   ├── EventRequestDTO.java
+    │   │   │   │   └── EventResponseDTO.java
+    │   │   │   ├── model
+    │   │   │   │   └── Event.java
+    │   │   │   ├── Observer
+    │   │   │   │   ├── EventNotificationConsole.java
+    │   │   │   │   ├── EventObserver.java
+    │   │   │   │   └── EventSubject.java
+    │   │   │   ├── repository
+    │   │   │   │   ├── EventRepository.java
+    │   │   │   │   └── EventRepositoryMysql.java
+    │   │   │   └── service
+    │   │   │       ├── EventServiceImpl.java
+    │   │   │       └── EventService.java
+    │   │   ├── infrastructure
+    │   │   │   └── sql
+    │   │   │       └── structure.sql
+    │   │   ├── note
+    │   │   │   ├── cli
+    │   │   │   │   └── NoteMenu.java
+    │   │   │   ├── dto
+    │   │   │   │   ├── NoteMapper.java
+    │   │   │   │   ├── NoteRequestDTO.java
+    │   │   │   │   └── NoteResponseDTO.java
+    │   │   │   ├── model
+    │   │   │   │   └── Note.java
+    │   │   │   ├── repository
+    │   │   │   │   ├── NoteRepository.java
+    │   │   │   │   └── NoteRepositoryMysql.java
+    │   │   │   └── service
+    │   │   │       ├── NoteServiceImpl.java
+    │   │   │       └── NoteService.java
+    │   │   └── task
+    │   │       ├── cli
+    │   │       │   └── TaskMenu.java
+    │   │       ├── dto
+    │   │       │   ├── TaskRequestDto.java
+    │   │       │   └── TaskResponseDto.java
+    │   │       ├── model
+    │   │       │   ├── Priority.java
+    │   │       │   └── Task.java
+    │   │       ├── repository
+    │   │       │   ├── TaskRepository.java
+    │   │       │   └── TaskRepositoryMysql.java
+    │   │       └── service
+    │   │           ├── TaskServiceImpl.java
+    │   │           └── TaskService.java
+    │   └── resources
+    │       └── agendadb.properties
+    └── test
+        ├── java
+        │   ├── common
+        │   │   └── persistence
+        │   │       └── DatabaseConnectionTest.java
+        │   ├── event
+        │   │   ├── repository
+        │   │   │   └── EventRepositoryMysqlTest.java
+        │   │   └── service
+        │   │       └── EventServiceImplTest.java
+        │   ├── note
+        │   │   ├── repository
+        │   │   │   └── NoteRepositoryMysqlTest.java
+        │   │   └── service
+        │   │       └── NoteServiceImplTest.java
+        │   └── task
+        │       ├── repository
+        │       │   └── TaskRepositoryMysqlTest.java
+        │       └── service
+        │           └── TaskServiceImplTest.java
+        └── resources
+            └── agendadb.properties
+```
+
 # Java Task, Event, and Note Manager
 
 A console-based Java application for managing tasks, events, and notes using **MySQL** with **JDBC**. The project is designed around a layered architecture with terminal input, exception handling, and database persistence.
@@ -185,120 +299,6 @@ CREATE TABLE IF NOT EXISTS note (
 - A **task** can have multiple notes.
 - A **note** must always belong to a task.
 
-## Project structure
-
-A typical structure for this project may include:
-
-```text
-├── build.gradle.kts
-├── docker-compose-test.yml
-├── docker-compose.yml
-├── gradle
-│   └── wrapper
-│       ├── gradle-wrapper.jar
-│       └── gradle-wrapper.properties
-├── gradlew
-├── gradlew.bat
-├── README.md
-├── settings.gradle.kts
-└── src
-    ├── main
-    │   ├── java
-    │   │   ├── application
-    │   │   │   ├── AgendaApp.java
-    │   │   │   ├── config
-    │   │   │   │   └── DependencyConfig.java
-    │   │   │   └── menu
-    │   │   │       └── MainMenu.java
-    │   │   ├── common
-    │   │   │   ├── exception
-    │   │   │   │   ├── EventIdDoesNotExists.java
-    │   │   │   │   ├── EventSQLException.java
-    │   │   │   │   ├── NoteIdDoesNotExists.java
-    │   │   │   │   ├── NoteSQLException.java
-    │   │   │   │   ├── TaskNotFoundException.java
-    │   │   │   │   └── TaskSQLException.java
-    │   │   │   ├── persistence
-    │   │   │   │   └── DatabaseConnection.java
-    │   │   │   └── utils
-    │   │   ├── event
-    │   │   │   ├── cli
-    │   │   │   │   └── EventMenu.java
-    │   │   │   ├── dto
-    │   │   │   │   ├── EventMapper.java
-    │   │   │   │   ├── EventRequestDTO.java
-    │   │   │   │   └── EventResponseDTO.java
-    │   │   │   ├── model
-    │   │   │   │   └── Event.java
-    │   │   │   ├── Observer
-    │   │   │   │   ├── EventNotificationConsole.java
-    │   │   │   │   ├── EventObserver.java
-    │   │   │   │   └── EventSubject.java
-    │   │   │   ├── repository
-    │   │   │   │   ├── EventRepository.java
-    │   │   │   │   └── EventRepositoryMysql.java
-    │   │   │   └── service
-    │   │   │       ├── EventServiceImpl.java
-    │   │   │       └── EventService.java
-    │   │   ├── infrastructure
-    │   │   │   └── sql
-    │   │   │       └── structure.sql
-    │   │   ├── note
-    │   │   │   ├── cli
-    │   │   │   │   └── NoteMenu.java
-    │   │   │   ├── dto
-    │   │   │   │   ├── NoteMapper.java
-    │   │   │   │   ├── NoteRequestDTO.java
-    │   │   │   │   └── NoteResponseDTO.java
-    │   │   │   ├── model
-    │   │   │   │   └── Note.java
-    │   │   │   ├── repository
-    │   │   │   │   ├── NoteRepository.java
-    │   │   │   │   └── NoteRepositoryMysql.java
-    │   │   │   └── service
-    │   │   │       ├── NoteServiceImpl.java
-    │   │   │       └── NoteService.java
-    │   │   └── task
-    │   │       ├── cli
-    │   │       │   └── TaskMenu.java
-    │   │       ├── dto
-    │   │       │   ├── TaskRequestDto.java
-    │   │       │   └── TaskResponseDto.java
-    │   │       ├── model
-    │   │       │   ├── Priority.java
-    │   │       │   └── Task.java
-    │   │       ├── repository
-    │   │       │   ├── TaskRepository.java
-    │   │       │   └── TaskRepositoryMysql.java
-    │   │       └── service
-    │   │           ├── TaskServiceImpl.java
-    │   │           └── TaskService.java
-    │   └── resources
-    │       └── agendadb.properties
-    └── test
-        ├── java
-        │   ├── common
-        │   │   └── persistence
-        │   │       └── DatabaseConnectionTest.java
-        │   ├── event
-        │   │   ├── repository
-        │   │   │   └── EventRepositoryMysqlTest.java
-        │   │   └── service
-        │   │       └── EventServiceImplTest.java
-        │   ├── note
-        │   │   ├── repository
-        │   │   │   └── NoteRepositoryMysqlTest.java
-        │   │   └── service
-        │   │       └── NoteServiceImplTest.java
-        │   └── task
-        │       ├── repository
-        │       │   └── TaskRepositoryMysqlTest.java
-        │       └── service
-        │           └── TaskServiceImplTest.java
-        └── resources
-            └── agendadb.properties
-```
-
 ## Error handling
 
 The application includes exception handling and input validation to make terminal interaction safer and easier to manage. This helps detect invalid IDs, database errors, and incorrect user input without crashing the application.
@@ -330,6 +330,28 @@ This project is suitable for practicing:
 - DTO mapping
 - Unit and integration testing
 - Exception-driven error handling
+
+## Design Patterns
+
+This project applies several classic design patterns to keep the code organized, reusable, and easier to maintain.
+
+### Builder Pattern for Menus
+
+The menu system was implemented using the **Builder** pattern. This approach makes it easier to create terminal menus step by step, separating menu construction from its final representation and improving readability when defining multiple options and sections.
+
+Using Builder for the console UI helps avoid large, repetitive blocks of menu creation code. It also makes the menus easier to extend when new options or submenus are added in the future.
+
+### Singleton Pattern for Database Access
+
+Database access was implemented using the **Singleton** pattern. This ensures that the application uses a single shared database connection manager or configuration instance, which is a common use case for Singleton in Java applications.
+
+Using Singleton for the database layer helps centralize connection management and prevents unnecessary duplication of shared resources. It also provides a single access point for JDBC-related operations across repositories and services.
+
+### Observer Pattern for Upcoming Events
+
+The application uses the **Observer** pattern to display upcoming events when the program starts. In this design, one component acts as the subject and notifies subscribed observers when startup event checks are triggered.
+
+This pattern is useful because it decouples the event-checking logic from the components responsible for displaying notifications in the terminal. As a result, the startup behavior can be extended more easily without tightly coupling the main application flow to the notification logic.
 
 ## Possible improvements
 
