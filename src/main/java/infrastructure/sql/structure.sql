@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS task (
     description VARCHAR(255) NOT NULL,
     event_id INT UNSIGNED NULL,
     FOREIGN KEY (event_id) REFERENCES event(id)
+    ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS note (
@@ -26,4 +27,5 @@ CREATE TABLE IF NOT EXISTS note (
     created_at DATETIME NOT NULL,
     task_id INT UNSIGNED NOT NULL,
     FOREIGN KEY (task_id) REFERENCES task(id)
+    ON DELETE CASCADE
 );
