@@ -1,0 +1,332 @@
+package event.cli;
+
+import common.exception.EventIdDoesNotExists;
+import common.exception.EventSQLException;
+import common.exception.TaskNotFoundException;
+import common.exception.TaskSQLException;
+import event.dto.EventRequestDTO;
+import event.dto.EventResponseDTO;
+import event.service.EventService;
+import task.cli.TaskMenu;
+import task.dto.TaskResponseDto;
+import task.service.TaskService;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Scanner;
+
+public class EventMenu {
+
+    private final EventService eventServiceImpl;
+    private final TaskService taskServiceImpl;
+    private final Scanner scanner;
+
+    private static final String DATE_PATTERN = "dd/MM/yyyy";
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
+
+    public EventMenu(EventService eventServiceImpl, TaskService taskServiceImpl) {
+        this.eventServiceImpl = eventServiceImpl;
+        this.taskServiceImpl = taskServiceImpl;
+        scanner = new Scanner(System.in);
+    }
+
+    public void showMenu() {
+        boolean back = false;
+        while (!back) {
+            System.out.println("""
+                    ===========EVENT=MENU==========
+                    1. Create event
+                    2. Edit event
+                    3. Delete event
+                    4. Find event by id
+                    5. List all event
+                    6. List event by Upcoming days
+                    7. List event by after date
+                    8. List all task for an event
+                    9. Assign a task to event
+                    
+                    0. Back
+                    ==============================
+                    """);
+
+            System.out.print("-Select an option: ");
+            String option = scanner.nextLine().trim();
+            switch (option) {
+                case "1" -> createEvent();
+                case "2" -> editEvent();
+                case "3" -> deleteEvent();
+                case "4" -> findEventById();
+                case "5" -> listEvents(eventServiceImpl.selectAllEvents());
+                case "6" -> listEvents(eventServiceImpl.findByUpcoming(readDays()));
+                case "7" -> listEvents(eventServiceImpl.findAllByDateAfter(readEventDate(true).get()));
+                case "8" -> listTasksByEvent();
+                case "9" -> assignTaskToEvent();
+                case "0" -> back = true;
+                default -> System.out.println("  Invalid option.");
+            }
+        }
+    }
+
+    private void createEvent() {
+        try {
+            System.out.println("Creating Event, insert...");
+            String title = readTitle(true);
+            String description = readDescription();
+            LocalDate eventDate = readEventDate(true).get();
+            boolean recurring = eventIsRecurring(true).get();
+
+            EventResponseDTO created = eventServiceImpl.insertEvent(
+                    new EventRequestDTO(title, description, eventDate, recurring)
+            );
+            System.out.println("  • Event created with id: " + created.id());
+            pressEnterToContinue();
+        } catch (TaskSQLException e) {
+            System.out.println("Error creating Event: "+ e.getMessage());
+        }
+    }
+
+    private void editEvent() {
+        System.out.println("Edit event, update...");
+        int id = readId();
+        try {
+            EventResponseDTO existing = eventServiceImpl.selectEventById(id);
+
+            System.out.println(" • Event found, Leave blank to keep current value.");
+
+            String title = readTitle(false);
+            if (title.isBlank()) title = existing.title();
+
+            String desc = readDescription();
+            if (desc.isBlank()) desc = existing.description();
+
+            Optional<LocalDate> eventDate = readEventDate(false);
+            LocalDate newEventDate = eventDate.orElse(existing.event_date());
+
+            Optional<Boolean> recurring = eventIsRecurring(false);
+            boolean newRecurring = recurring.orElse(existing.recurring());
+
+            eventServiceImpl.updateEvent(new EventRequestDTO(title, desc, newEventDate, newRecurring), id);
+            System.out.println("  • Event updated.");
+            pressEnterToContinue();
+
+        } catch (EventIdDoesNotExists | EventSQLException e) {
+            System.out.println("  x " + e.getMessage());
+            pressEnterToContinue();
+        }
+    }
+
+    private void deleteEvent() {
+        System.out.println("Delete event, insert...");
+        int id = readId();
+
+        System.out.print("Are you sure you want to delete this task? (yes/no): ");
+        String confirmation = scanner.nextLine().trim().toLowerCase();
+
+        if (!confirmation.equals("yes")) {
+            System.out.println("  • Deletion cancelled.");
+            pressEnterToContinue();
+            return;
+        }
+
+        try {
+            eventServiceImpl.deleteById(id);
+            System.out.println("  • Event deleted.");
+        } catch (EventSQLException e) {
+            System.out.println("  x " + e.getMessage());
+        }
+        pressEnterToContinue();
+    }
+
+    private void findEventById() {
+        System.out.println("Find event by id, insert...");
+        int id = readId();
+        try {
+            EventResponseDTO found = eventServiceImpl.selectEventById(id);
+            List<TaskResponseDto> tasks = taskServiceImpl.listByEvent(id);
+            printEvent(found, tasks);
+        } catch (EventIdDoesNotExists | EventSQLException e){
+            System.out.println("  x " + e.getMessage());
+        }
+        pressEnterToContinue();
+    }
+
+    private void printEvent(EventResponseDTO event, List<TaskResponseDto> tasks) {
+        System.out.printf("  [%d] %s%n", event.id(), event.title());
+        System.out.println("      " + event.description());
+        System.out.println("      Event Date: " + event.event_date().format(DATE_TIME_FORMATTER));
+        if(!tasks.isEmpty()) {
+            System.out.print("      Tasks id: ");
+            for (TaskResponseDto task : tasks) {
+                System.out.print(" [" + task.id() + "]");
+            }
+            System.out.println();
+        }
+    }
+
+    private void listEvents(List<EventResponseDTO> events) {
+        System.out.println();
+        if (events.isEmpty()) {
+            System.out.println("  No events found.");
+        } else {
+            System.out.println("=======================================");
+            events.forEach(e -> printEvent(e, taskServiceImpl.listByEvent(e.id())));
+            System.out.println("=======================================");
+        }
+        pressEnterToContinue();
+    }
+
+    private void assignTaskToEvent() {
+        System.out.println("Assign task to event, insert...");
+        System.out.println("Event...");
+
+        int eventId = readId();
+        try {
+            EventResponseDTO eventFound = eventServiceImpl.selectEventById(eventId);
+
+            System.out.println("Task...");
+            int taskId = readId();
+            TaskResponseDto task = taskServiceImpl.findById(taskId);
+
+            Integer tasksEventIdExist = task.eventId();
+            if (tasksEventIdExist != null) {
+                System.out.println("Task is already assigned to an event.");
+                System.out.print("Are you sure you want to assign to this event? (yes/no): ");
+                String confirmation = scanner.nextLine().trim().toLowerCase();
+
+                if (!confirmation.equalsIgnoreCase("yes")) {
+                    System.out.println("  • Assign cancelled.");
+                    pressEnterToContinue();
+                    return;
+                }
+            }
+
+            taskServiceImpl.assignToEvent(taskId, eventFound.id());
+
+            System.out.println("  Task ["+ taskId + "] assigned to event [" + eventId + "]");
+            pressEnterToContinue();
+
+        } catch (EventIdDoesNotExists | TaskNotFoundException | EventSQLException | TaskSQLException e) {
+            System.out.println("  x " + e.getMessage());
+            pressEnterToContinue();
+        }
+    }
+
+    private void listTasksByEvent() {
+        System.out.println("Listing tasks by event, insert...");
+        System.out.println("Event...");
+        int id = readId();
+
+        try {
+            EventResponseDTO found = eventServiceImpl.selectEventById(id);
+
+            List<TaskResponseDto> tasks = taskServiceImpl.listByEvent(id);
+
+            System.out.println("===============EVENT==================");
+            printEvent(found, new ArrayList<>());
+            System.out.println("===============TASKS==================");
+            if(tasks.isEmpty()) {
+                System.out.println("  None");
+            } else {
+                for (TaskResponseDto task : tasks) {
+                    TaskMenu.printTask(task);
+                }
+            }
+            System.out.println("=======================================");
+            pressEnterToContinue();
+
+        } catch (EventSQLException | TaskSQLException | EventIdDoesNotExists e) {
+            System.out.println("  x " + e.getMessage());
+            pressEnterToContinue();
+        }
+    }
+
+    private void pressEnterToContinue() {
+        System.out.print("\nPress ENTER to continue...");
+        scanner.nextLine();
+    }
+
+    //---------------Reading - Helpers---------------
+
+    private String readTitle(boolean required) {
+        while (true) {
+            System.out.print("Title:  ");
+            String input = scanner.nextLine().trim();
+            try {
+                if(!required && input.isEmpty()) return input;
+                eventServiceImpl.titleValidation(input);
+                return input;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage() + "\n Try again.");
+            }
+        }
+    }
+
+    private String readDescription() {
+        while (true) {
+            System.out.print("Description:  ");
+            String input = scanner.nextLine().trim();
+            try {
+                eventServiceImpl.descriptionValidation(input);
+                return input;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage() + "\n Try again.");
+            }
+        }
+    }
+
+    private Optional<LocalDate> readEventDate(boolean required) {
+        while (true) {
+            System.out.print("Use format: " + DATE_PATTERN + " , date: ");
+            String input = scanner.nextLine().trim();
+            if(!required && input.isBlank()) return Optional.empty();
+            try {
+                return Optional.of(LocalDate.parse(input, DATE_TIME_FORMATTER));
+            } catch (DateTimeParseException e) {
+                System.out.println("  Invalid format, try again.");
+            }
+        }
+    }
+
+    private Optional<Boolean> eventIsRecurring(boolean required) {
+        while(true) {
+            System.out.println("Event recurring yearly? (yes/no)");
+            System.out.print("Recurring?: ");
+            String recurring = scanner.nextLine().trim().toLowerCase();
+
+            if(recurring.isBlank() && !required) return Optional.empty();
+            if(recurring.equalsIgnoreCase("yes")) return Optional.of(true);
+            if(recurring.equalsIgnoreCase("no")) return Optional.of(false);
+            System.out.println("    Invalid input, try again");
+        }
+    }
+
+    private Integer readId() {
+        while (true) {
+            System.out.print("ID: ");
+            try {
+                return Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("  Invalid ID, try again.");
+            }
+        }
+    }
+
+    private int readDays() {
+        while (true) {
+            System.out.print("Upcoming days: ");
+            try {
+                int days = Integer.parseInt(scanner.nextLine().trim());
+                if(days < 0) throw new IllegalArgumentException("Days can't be negative");
+                return days;
+            } catch (NumberFormatException e) {
+                System.out.println("  Invalid input, try again.");
+            } catch (IllegalArgumentException e) {
+                System.out.println("  Invalid input, try again. " + e.getMessage());
+            }
+        }
+    }
+}
