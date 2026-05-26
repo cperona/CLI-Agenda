@@ -28,6 +28,12 @@ This utility offers the option to filter and order by priority, state, date, and
 java -jar build/libs/CLI-Agenda-1.0-SNAPSHOT-all.jar
 ```
 
+## 👨‍🔧 Troubleshooting
+If any error occurs with the database, delete it and create it again:
+`docker exec -it agendaDatabase mysql -u devs -pp1234`
+`drop database agenda`
+`create database agenda`
+
 
 ## 🧩 Required
 - Docker
