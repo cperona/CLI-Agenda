@@ -16,6 +16,19 @@ This utility offers the option to filter and order by priority, state, date, and
 1. Clone this repository: `git clone github.com/cperona/CLI-Agenda`
 2. Run: `sudo docker compose up -d --remove-orphans `
 
+## Compile the application
+
+```text
+./gradlew clean shadowJar -x test
+```
+
+## Execute the compiled application
+
+```text
+java -jar build/libs/CLI-Agenda-1.0-SNAPSHOT-all.jar
+```
+
+
 ## 🧩 Required
 - Docker
 - Java-25
@@ -23,6 +36,10 @@ This utility offers the option to filter and order by priority, state, date, and
 ## 🧪 Tests
 1. Run: `sudo docker compose -f docker-compose-test.yml up --remove-orphans`
 2. To run all the tests: `runAllTests` gradle run task
+
+```text
+.\gradlew clean runAllTests
+```
 
 ## Project structure
 
