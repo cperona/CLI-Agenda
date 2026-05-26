@@ -175,15 +175,12 @@ public class EventRepositoryMysql implements EventRepository {
             String sql = """
                 SELECT * FROM event
                 WHERE (recurring = false
-                       AND event_date BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL ? DAY))
-                   OR (recurring = true
-                       AND DAYOFYEAR(event_date) BETWEEN DAYOFYEAR(NOW())
-                           AND DAYOFYEAR(DATE_ADD(NOW(), INTERVAL ? DAY)))
+                       AND event_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL ? DAY))
+                   OR (recurring = true)
                 ORDER BY event_date ASC
                 """;
             try (PreparedStatement prepared = connection.prepareStatement(sql)) {
                 prepared.setInt(1, days);
-                prepared.setInt(2, days);
                 ResultSet rs = prepared.executeQuery();
                 List<Event> result = new ArrayList<>();
                 while (rs.next()) {
