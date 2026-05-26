@@ -14,13 +14,14 @@ public class MainMenu {
 
     public void run() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("\n  Checking upcoming events...");
-        if(!config.notifyUpcomingEvents()) {
-            System.out.println("   -None");
-        }
-
         boolean running = true;
+
         while (running) {
+            System.out.println("\n--- Upcoming Events (Next 7 days) ---");
+            if(!config.notifyUpcomingEvents()) {
+                System.out.println("  - None");
+            }
+
             System.out.println("\n -----------Main-Menu----------");
             System.out.println("  1. Tasks");
             System.out.println("  2. Notes");
