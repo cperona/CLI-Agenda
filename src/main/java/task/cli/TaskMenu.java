@@ -144,7 +144,7 @@ public class TaskMenu {
             System.out.println("Mark task as completed, insert...");
             taskServiceImpl.markCompleted(readId());
             System.out.println("  • Task marked as completed.");
-        } catch (TaskSQLException e) {
+        } catch (TaskSQLException | TaskNotFoundException e) {
             System.out.println("  x " + e.getMessage());
         }
         pressEnterToContinue();
