@@ -32,4 +32,16 @@ tasks.jar {
 
 tasks.test {
     useJUnitPlatform()
+
+}
+
+tasks.register("runAllTests") {
+    description = "Run all tests in the project"
+    group = "verification"
+    dependsOn("test")
+}
+
+tasks.named("test") {
+    description = "Run all unit tests"
+    group = "verification"
 }
