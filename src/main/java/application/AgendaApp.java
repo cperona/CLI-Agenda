@@ -6,7 +6,7 @@ import common.persistence.DatabaseConnection;
 
 public class AgendaApp {
 
-    static void main(String[] args) {
+    public static void main(String[] args) {
         System.out.println("|==============================|");
         System.out.println("|       CLI-AGENDA  v1.0       |");
         System.out.println("|==============================|");
