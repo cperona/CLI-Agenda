@@ -43,7 +43,7 @@ public class EventMenu {
                     2. Edit event
                     3. Delete event
                     4. Find event by id
-                    5. List all event
+                    5. List all events
                     6. List event by Upcoming days
                     7. List event by after date
                     8. List all task for an event
